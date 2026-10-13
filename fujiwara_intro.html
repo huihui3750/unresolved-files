@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CASE 001｜牆後的第三聲・案件檔案</title><link rel="stylesheet" href="{{ url_for('static', filename='css/fujiwara-intro.css') }}"></head>
+<body><div class="desk"><main class="file">
+<nav class="top"><a href="/">← 返回案件首頁</a><span>UNSOLVED FILES / ARCHIVE NO. 001</span></nav>
+<header class="cover"><p class="stamp">機密調查檔案　／　CASE 001</p><h1>牆後的第三聲</h1><p class="subtitle">THE THIRD SOUND BEHIND THE WALL</p><p class="tagline">「說謊者，不一定就是兇手。」</p></header>
+<div class="illustration" role="img" aria-label="藤原山莊東側客房的調查場景"></div>
+<section class="section"><h2><span>01</span> 你的身分</h2><p>你是一名受委託重新調查舊案的<strong>民間調查員</strong>。你的工作不是替任何人定罪，而是檢查當年的證詞與證物，找出被忽略的矛盾，重建可能的事件經過。</p><p>委託人是<strong>藤原澪</strong>。她不相信姊姊的死亡已獲得合理解釋，因此邀請你前往藤原山莊。</p></section>
+<section class="section"><h2><span>02</span> 案件背景</h2><p><strong>七年前</strong>，藤原家的長女<strong>藤原凜</strong>死於山莊東側客房。當年事件以意外方向結案，但現場的封閉狀態、屋內傳出的異響，以及家人各自不同的說法，至今仍有疑點。</p><p>如今山莊即將整理舊建物，部分封存資料重新出現。你獲准查閱相關紀錄，並與當事人重新談話。這一次，你要判斷的是：當年的調查究竟漏掉了什麼？</p></section>
+<section class="section"><h2><span>03</span> 已知案情</h2><div class="facts"><div><small>事件地點</small><strong>藤原山莊・東側客房</strong></div><div><small>死者</small><strong>藤原凜</strong></div><div><small>事件時間</small><strong>七年前</strong></div><div><small>委託人</small><strong>藤原澪（死者妹妹）</strong></div><div><small>關鍵疑點</small><strong>封閉客房與牆後的聲響</strong></div><div><small>案件狀態</small><strong>重新調查</strong></div></div><p class="notice">這裡列出的只是調查開始前已知的資訊；任何人的說法都不應直接當成事實。</p></section>
+<section class="section"><h2><span>04</span> 調查方式</h2><ol><li>點擊場景物品，蒐集證物與調查紀錄。</li><li>切換房間、書房與走廊，尋找不同來源的資訊。</li><li>詢問相關人物，利用證物檢驗說法是否一致。</li><li>整理線索、完成推理，最後提交結案判斷。</li></ol><p class="notice">進度儲存在目前瀏覽器中。關閉頁面後可返回繼續；清除瀏覽器資料可能導致存檔消失。</p></section>
+<section class="actions" aria-label="開始遊戲"><div><small>案件調查狀態</small><p id="save-status" aria-live="polite">正在讀取本機進度…</p></div><div class="buttons"><a id="play" class="primary" href="/cases/fujiwara/play">開始調查 →</a><button id="new-game" type="button" hidden>重新開始案件</button></div><p id="message" role="status"></p></section>
+<footer>UNSOLVED FILES　·　藤原山莊　·　案件資料不代表最終結論</footer>
+</main></div><script src="{{ url_for('static', filename='js/fujiwara-intro.js') }}" defer></script></body></html>

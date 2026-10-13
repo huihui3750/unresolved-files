@@ -1,0 +1,11 @@
+/* V29 multi-page layout: one persistent game state, separate focused views */
+.case-page-nav{position:sticky;top:0;z-index:35;display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#30231ded;border:1px solid #77563e;border-radius:10px;box-shadow:0 5px 18px #0003}
+.case-page-nav a{color:#f5e6c6;text-decoration:none;padding:11px 15px;border:1px solid #947451;border-radius:7px;min-height:44px;display:inline-flex;align-items:center;font-weight:650}
+.case-page-nav a:hover,.case-page-nav a[aria-current="page"]{background:#e9d3a7;color:#34231a;border-color:#d1ac6b}
+.page-guide{padding:8px 12px;margin:8px 0 14px;color:#ead9b8;background:#443227;border-radius:6px}
+[data-case-page][hidden]{display:none!important}
+#case-main{min-height:55vh}
+.case-page-report{padding:26px;min-height:45vh;border:1px solid #8c704c;background:#eee0bc;color:#35291e;border-radius:8px}
+.case-page-report h2{color:#442f20}
+.case-page-report a{color:#54351c}
+@media(max-width:650px){.case-page-nav{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.case-page-nav a{font-size:14px;padding:10px 8px;justify-content:center}.case-page-nav a:last-child{grid-column:1/-1}.page-guide{font-size:13px}}

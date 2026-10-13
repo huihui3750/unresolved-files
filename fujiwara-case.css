@@ -1,0 +1,120 @@
+/* V15 styles */
+:root{color-scheme:dark;font-family:"Noto Serif TC","Songti TC",serif;background:#16120f;color:#e9d9bb}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#443122,#17120f 75%)}button{font:inherit;cursor:pointer}.app{max-width:1280px;margin:auto;padding:18px 22px 28px}.mast{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid #8d6a45;padding-bottom:14px}.mast small,.journal small,.toolbar small,.popup small{letter-spacing:2px;color:#c8a77c;font-size:11px}.mast h1{font-size:clamp(24px,3vw,38px);margin:7px 0 0;font-weight:600}.mast h1 span{font-size:.52em;color:#c9ad88}.small,.toolbar button,.journal button,.locations button{background:#392b22;color:#ecd9b9;border:1px solid #8a6a49;border-radius:3px;padding:10px 13px}.small:hover,.toolbar button:hover,.journal button:hover,.locations button:hover{background:#59402d}.scene{height:min(56vw,590px);min-height:360px;position:relative;overflow:hidden;border:7px solid #35271d;box-shadow:0 18px 35px #0008;margin-top:20px;background:#352b22}.scene-art{position:absolute;inset:0;background-image:linear-gradient(180deg,transparent 55%,#25190cbb),url('/static/art/fujiwara-east-room.svg');background-size:cover;background-position:center}.scene-vignette{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 100px 35px #160c09aa}.hotspot{position:absolute;transform:translate(-50%,-50%);background:#23160cc9;border:1px solid #d1ae78;border-radius:4px;color:#ffe5ae;padding:8px 11px;box-shadow:0 0 0 4px #1c100877;font-size:14px}.hotspot:hover,.hotspot:focus-visible{background:#6c3929;outline:2px solid #d5b078;outline-offset:2px}.popup{position:absolute;z-index:3;width:min(330px,90%);background:#e5d3ad;color:#2d2119;border:3px double #806448;padding:19px 22px;box-shadow:8px 12px 0 #150c09b8}.popup[hidden]{display:none}.popup small{color:#735334}.popup h2{font-size:23px;margin:8px 0}.popup p{line-height:1.7;font-size:15px}.popup .hint{border-top:1px solid #bca782;padding-top:9px;color:#7b3026}.close{float:right;border:0;background:transparent;color:#5d352c;font-size:25px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;background:#2a2019;border:1px solid #66503b;padding:14px 18px;margin-top:12px}.toolbar p{margin:5px 0}.toolbar-actions{display:flex;flex-wrap:wrap;gap:8px}.journal{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.journal>div{background:#dfcba5;color:#30251a;min-height:165px;padding:18px 23px;border:3px double #826343}.journal small{color:#755639}.journal h2{font-size:22px;margin:7px 0}.journal li{line-height:1.8}.journal button{background:#5b392c}.journal #deduction{line-height:1.7}.locations{display:flex;justify-content:center;gap:10px;margin-top:20px}.locations .active{background:#794333;border-color:#d7a878}.locations button{min-width:150px}#notice{color:#dfba84;text-align:center;margin-top:12px;min-height:25px}@media(max-width:700px){.app{padding:12px}.scene{min-height:410px;height:66vh}.journal{grid-template-columns:1fr}.toolbar{align-items:stretch;flex-direction:column}.mast h1 span{display:block;margin-top:5px}.hotspot{font-size:12px;padding:7px}.locations button{min-width:0;flex:1;font-size:13px}.popup{padding:12px}}
+
+.integration-note{text-align:center;color:#c8a77c;margin-top:18px}.integration-note a{color:#ffe3b3}.scene[data-location="study"] .scene-art{background-image:linear-gradient(180deg,#382718bb,#1c120bd9),url("/static/art/fujiwara-east-room.svg");filter:sepia(.5)}.scene[data-location="hall"] .scene-art{background-image:linear-gradient(100deg,#281c15bb,#0e0c0bc9),url("/static/art/fujiwara-east-room.svg");filter:grayscale(.4)}.scene:not([data-location="room"])>.hotspot{display:none}#dynamic-hotspots .hotspot{z-index:1}.locations button[aria-current="page"]{background:#794333;border-color:#d7a878}
+
+.scene[data-location="study"] .scene-art{background-image:linear-gradient(180deg,transparent 70%,#25190c55),url("/static/art/fujiwara-study.svg");filter:none}
+.scene[data-location="hall"] .scene-art{background-image:linear-gradient(180deg,transparent 70%,#25190c55),url("/static/art/fujiwara-hall.svg");filter:none}
+#hotspots .hotspot{z-index:1}#evidence li,#notes li{padding:3px 0}.toolbar-actions{justify-content:flex-end}.hotspot.locked{border-style:dashed;opacity:.88}
+
+/* V13 人物詢問與反駁 */
+.interrogation{margin-top:22px;border:2px solid #795b3b;background:#251b15;padding:20px}.interrogation-head{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid #75583b;margin-bottom:16px}.interrogation-head small{letter-spacing:2px;color:#c8a77c;font-size:11px}.interrogation-head h2{margin:7px 0 13px;font-size:23px}.interrogation-head p{color:#c8a77c;font-size:13px}.witness-layout{display:grid;grid-template-columns:minmax(190px,1fr) minmax(0,2.2fr);gap:18px}.witness-list,.topic-list{display:flex;flex-wrap:wrap;gap:8px}.witness-list{flex-direction:column}.witness-list button,.topic-list button,.rebuttal button{background:#3c2b21;color:#f1dbb5;border:1px solid #a18259;border-radius:3px;padding:10px;text-align:left}.witness-list button.active{background:#784331}.witness-list button:disabled,.topic-list button:disabled{opacity:.4;cursor:not-allowed}.witness-tip{color:#c8a77c;font-size:13px;line-height:1.7}.testimony{background:#e2d0aa;color:#2e241a;padding:18px;border:3px double #826343}.testimony h3{font-size:22px;margin:0 0 6px}.testimony>p{line-height:1.65}.topic-list{margin:12px 0}.topic-list button{background:#5e4530}.statement{border-left:4px solid #894b38;margin:14px 0;padding:12px 14px;background:#f1e1c1;line-height:1.85;min-height:75px}.rebuttal{display:flex;flex-wrap:wrap;align-items:center;gap:10px}.rebuttal[hidden]{display:none}.rebuttal select{min-width:180px;max-width:100%;padding:9px;background:#fff5de;color:#352417;border:1px solid #876647}.rebuttal button{background:#743f32}#interrogation-feedback{min-height:22px;color:#743f32;font-weight:600}@media(max-width:700px){.witness-layout{grid-template-columns:1fr}.witness-list{flex-direction:row}.interrogation{padding:12px}.interrogation-head{align-items:flex-start;flex-direction:column}}
+
+/* V14 案件重建與結局 */
+.finale{margin-top:22px;padding:22px;background:#261c16;border:2px solid #846346;color:#ead8b7}.finale-head small{letter-spacing:2px;color:#c8a77c}.finale-head h2{font-size:24px;margin:8px 0}.finale p,.finale li{line-height:1.8}.finale-options{display:grid;gap:10px;margin-top:16px}.finale-options button,.finale-submit,#ending button{background:#493328;color:#f5dfb9;border:1px solid #b68a58;padding:13px 16px;text-align:left;border-radius:3px}.finale-options button:hover,.finale-submit:hover,#ending button:hover{background:#754633}.finale-warning{color:#e8bd81;font-weight:bold}.finale-feedback{min-height:22px;color:#e8bd81}#ending{background:#e1cfaa;color:#2d231a;padding:20px;border:3px double #846346}#ending[hidden]{display:none}#ending h3{font-size:26px;margin-top:0}#ending button{margin-top:8px}
+/* V15: 地點切換保持可見，減少長頁面來回捲動。 */
+.locations{position:sticky;bottom:0;z-index:20;background:#1e1712f2;padding:12px 10px;border-top:1px solid #806142;box-shadow:0 -8px 24px #0009;flex-wrap:wrap}
+.locations button:focus-visible,.hotspot:focus-visible,.witness-list button:focus-visible,.topic-list button:focus-visible,.finale-options button:focus-visible{outline:3px solid #f1cf8a;outline-offset:2px}
+.finale-submit:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:700px){.locations{gap:5px;padding:8px 4px}.locations button{padding:9px 4px;font-size:12px}}
+
+
+/* V16 styles */
+/* V16 - 對話舞台、線索板與最終對質的視覺增強。保留 V15 核心邏輯。 */
+:root{--v16-paper:#e8d6b3;--v16-ink:#34271e;--v16-red:#8c4238}
+.interrogation{background:linear-gradient(145deg,#34251b,#1b1511);box-shadow:0 18px 40px #0005}
+.testimony{position:relative;background:linear-gradient(125deg,#e9d8b6,#d5bb91);box-shadow:inset 0 0 28px #8d663027}
+.v16-character{display:flex;align-items:center;gap:18px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid #a38964}
+.v16-portrait{position:relative;width:118px;height:144px;flex-shrink:0;border:7px solid #654932;box-shadow:0 5px 12px #3d271d66;background:radial-gradient(circle at 50% 25%,#cbb28c,#7c5b43 75%);overflow:hidden}
+.v16-portrait:before{content:'';position:absolute;top:20px;left:34px;width:40px;height:53px;background:#38291f;border-radius:48% 48% 44% 44%;box-shadow:0 -12px 0 5px #2b211c}
+.v16-portrait:after{content:'';position:absolute;bottom:-28px;left:10px;width:88px;height:87px;background:#32271f;border-radius:45% 45% 0 0}
+.v16-portrait span{position:absolute;z-index:2;bottom:4px;right:4px;background:#e5d2a9;color:#4e3127;padding:2px 6px;font-size:12px;border:1px solid #805d42}
+.v16-portrait[data-person="mio"]{background:linear-gradient(145deg,#c9a99b,#66505a)}
+.v16-portrait[data-person="shizue"]{background:linear-gradient(145deg,#b3b5a3,#595d54)}
+.v16-portrait[data-person="naoto"]{background:linear-gradient(145deg,#c4b49a,#535b59)}
+.v16-portrait[data-person="souichiro"]{background:linear-gradient(145deg,#9b7963,#392c29)}
+.v16-character-heading{min-width:0}.v16-character-heading>span{font-size:11px;letter-spacing:2px;color:#754b35}.v16-character-heading h3{font-size:26px;margin:7px 0}.v16-character-heading p{line-height:1.65;margin:0}
+.statement{position:relative;font-size:17px;border-left:5px solid #873e35;box-shadow:0 3px 12px #3d26191a}.statement:before{content:'證 言';display:block;font-size:11px;letter-spacing:3px;color:#8a4b3b;margin-bottom:6px}
+.topic-list button:focus-visible,.rebuttal button:focus-visible{outline:3px solid #9e4b37;outline-offset:2px}
+.v16-board{margin-top:22px;padding:22px;border:9px ridge #775334;background:repeating-linear-gradient(22deg,#775237 0px,#81593c 12px,#795237 24px);color:#f5e7ce;box-shadow:0 20px 35px #0008}
+.v16-board-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.v16-board-heading small{letter-spacing:2px;font-size:11px;color:#e8c99a}.v16-board h2{margin:5px 0;font-size:25px}.v16-board-help{line-height:1.7;color:#f3dfc0;font-size:14px}.v16-board-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:16px;padding:15px 3px;min-height:130px}.v16-evidence-card{min-height:145px;position:relative;padding:28px 12px 13px;background:#e7d4ab;color:#3e2d1e;border:0;box-shadow:5px 8px 0 #2b1b1380;transform:rotate(var(--angle,0deg));text-align:left;transition:transform .15s,box-shadow .15s}.v16-evidence-card:before{content:'';position:absolute;top:7px;left:calc(50% - 7px);height:14px;width:14px;background:#9c3d31;border-radius:50%;box-shadow:1px 2px 2px #432519a0}.v16-evidence-card strong{display:block;font-size:16px;line-height:1.5}.v16-evidence-card small{display:block;margin-top:13px;color:#80644b}.v16-evidence-card[aria-pressed="true"]{outline:4px solid #f0bc70;transform:rotate(0) translateY(-6px);box-shadow:5px 12px 0 #2b1b1380}.v16-board-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-top:1px solid #c7a37c;padding-top:14px}.v16-board-actions p{flex:1;min-width:150px}.v16-board-actions button{padding:10px 14px;background:#e1c89e;color:#35261b;border:2px solid #523826}.v16-board-actions button:disabled{opacity:.55;cursor:not-allowed}#v16-board-feedback{min-height:22px;font-weight:600}
+.v16-confrontation{position:relative;background:linear-gradient(125deg,#e9d5ad,#c7ac82);color:#3a261c;padding:22px 25px 19px;margin:15px 0 24px;border:4px double #7c5138}.v16-stamp{position:absolute;right:18px;top:12px;border:2px solid #95483f;color:#95483f;padding:4px 9px;transform:rotate(10deg);font-size:12px;letter-spacing:2px}.v16-confrontation p{max-width:85%;font-size:17px}.v16-confrontation-meter{height:9px;background:#ad8e70;border:1px solid #7b5c46}.v16-confrontation-meter span{display:block;height:100%;background:#88483b;width:0;transition:width .2s}.finale-options button{position:relative;padding-left:24px;border-left:5px solid #b68a58}.finale-options button:hover{border-left-color:#f4d49b}#ending{box-shadow:0 15px 40px #0006}
+@media(max-width:700px){.v16-character{align-items:flex-start;gap:10px}.v16-portrait{width:84px;height:112px}.v16-portrait:before{left:22px;top:17px;width:29px;height:38px}.v16-portrait:after{left:4px;width:68px}.v16-board{padding:12px}.v16-board-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.v16-board-heading{align-items:flex-start;flex-direction:column}.v16-confrontation p{max-width:100%}.v16-stamp{position:static;display:inline-block}}
+
+
+/* V17 styles */
+/* V17 最終對質：舞台式逐句演出，不依賴圖片服務。 */
+.v17-emotion{display:inline-block;margin:0 0 8px;padding:4px 10px;background:#734d38;color:#f3e1c2;font-size:12px;letter-spacing:2px;border:1px solid #a87c56}
+.v17-cutscene[hidden]{display:none!important}
+.v17-cutscene{position:fixed;inset:0;z-index:9999;background:rgba(13,10,9,.91);display:flex;align-items:center;justify-content:center;padding:20px;color:#f6e8cc}
+.v17-dialogue-open{overflow:hidden}
+.v17-stage{width:min(100%,980px);min-height:min(660px,90vh);border:10px solid #62452d;box-shadow:0 20px 80px #000b;position:relative;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;background:radial-gradient(ellipse at 48% 30%,#695044 0%,#392a26 45%,#181311 100%)}
+.v17-stage:before{content:'';position:absolute;inset:0;opacity:.2;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 110px,#b29a77 111px,#b29a77 112px,transparent 113px 220px)}
+.v17-stage-top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:20px 24px;position:relative;z-index:2;letter-spacing:2px;font-size:11px;color:#e5d1b2}
+.v17-stage-top button{background:#392a23;border:1px solid #b49a75;color:#f6e8cc;padding:9px 13px;cursor:pointer}
+.v17-stage-portrait{position:absolute;top:11%;left:50%;transform:translateX(-50%);width:clamp(190px,32vw,310px);height:57%;border-radius:45% 45% 0 0;background:radial-gradient(ellipse at 50% 35%,#987a61,#39251e 67%);filter:drop-shadow(0 12px 25px #0008);display:flex;justify-content:center;align-items:center}
+.v17-stage-portrait:before{content:'';position:absolute;top:12%;width:32%;height:33%;border-radius:45%;background:#201815;box-shadow:0 -18px 0 8px #201815}
+.v17-stage-portrait:after{content:'';position:absolute;bottom:0;width:88%;height:52%;border-radius:44% 44% 0 0;background:#231b18}
+.v17-stage-portrait span{position:relative;z-index:1;font-size:42px;color:#e5d1b2;opacity:.78;transform:translateY(38px)}
+.v17-stage-portrait[data-speaker="藤原澪"]{background:radial-gradient(ellipse at 50% 35%,#9c7783,#38242c 70%)}
+.v17-stage-portrait[data-speaker="調查員"]{background:radial-gradient(ellipse at 50% 35%,#858274,#282a29 70%)}
+.v17-stage-portrait[data-speaker="旁白"]{background:radial-gradient(ellipse at 50% 35%,#997e52,#33241b 70%)}
+.v17-stage-panel{position:relative;z-index:2;margin:0 18px 18px;padding:22px 27px 19px;border:5px double #8a6344;background:linear-gradient(125deg,#e9d7b6,#cdb18a);color:#34251b;min-height:240px;box-shadow:0 -12px 35px #0007}
+.v17-stage-panel small{letter-spacing:2px;color:#705440}.v17-stage-panel h2{margin:7px 0;font-size:14px;color:#894d3b;letter-spacing:2px}.v17-stage-panel strong{font-size:23px}.v17-stage-panel p{font-size:18px;line-height:1.9;min-height:65px;margin:12px 0 15px}.v17-stage-panel button{display:block;margin-left:auto;background:#6f4235;color:#f9e9ce;border:1px solid #40271e;padding:10px 22px;cursor:pointer}.v17-stage button:focus-visible{outline:3px solid #e0b16c;outline-offset:3px}#v17-replay{margin-top:16px}
+@media(max-width:600px){.v17-cutscene{padding:6px}.v17-stage{min-height:94vh;border-width:5px}.v17-stage-panel{margin:0 7px 7px;padding:15px;min-height:290px}.v17-stage-panel p{font-size:16px}.v17-stage-top{padding:12px}.v17-stage-portrait{top:14%;height:49%}}
+@media(prefers-reduced-motion:reduce){.v17-cutscene *{animation:none!important;transition:none!important}}
+
+
+/* V18 styles */
+/* V18 - differentiated illustrated CSS portraits, contradiction feedback, finale atmosphere */
+.v16-portrait{position:relative;isolation:isolate;overflow:hidden;min-height:195px;border:5px double #a98964!important;border-radius:6px!important;background:radial-gradient(circle at 50% 30%,#bca08b 0%,#70534d 62%,#342821 100%)!important;box-shadow:inset 0 0 24px #24150e99,0 9px 20px #271a1677}
+.v16-portrait::before{content:'';position:absolute;z-index:1;left:31%;top:16%;width:38%;height:41%;border-radius:46% 46% 44% 44%;background:linear-gradient(115deg,#ead0b2,#b98d72);box-shadow:0 -18px 0 10px var(--hair,#392924),-14px -8px 0 -2px var(--hair,#392924),14px -8px 0 -2px var(--hair,#392924)}
+.v16-portrait::after{content:'';position:absolute;z-index:0;bottom:-25%;left:10%;width:80%;height:68%;border-radius:48% 48% 0 0;background:linear-gradient(110deg,var(--coat,#4b3435),#211c1a 80%);box-shadow:inset 0 16px 0 #ffffff13}
+.v16-portrait span{position:relative;z-index:3!important;align-self:flex-end!important;margin-bottom:5px;background:#e9d5b7dc;color:#56392c!important;border:1px solid #a68a65;font-size:15px!important;padding:3px 12px;letter-spacing:3px;transform:none!important;opacity:1!important}
+.v16-portrait[data-person=mio]{--hair:#322628;--coat:#71505c;background:radial-gradient(circle at 50% 25%,#c2a0a6,#62494c 70%,#2d2225)!important}
+.v16-portrait[data-person=shizue]{--hair:#535049;--coat:#4c5950;background:radial-gradient(circle at 50% 25%,#b5ac91,#625e50 70%,#292820)!important}
+.v16-portrait[data-person=naoto]{--hair:#292d2f;--coat:#3f555f;background:radial-gradient(circle at 50% 25%,#a5afb1,#45565b 70%,#242c30)!important}
+.v16-portrait[data-person=souichiro]{--hair:#28201d;--coat:#593c35;background:radial-gradient(circle at 50% 25%,#c0a18c,#67473e 70%,#2b201c)!important}
+.v16-portrait[data-person=shizue]::before{box-shadow:0 -12px 0 8px var(--hair),0 -23px 0 1px #d0c6b4}
+.v16-portrait[data-person=naoto]::before{border-radius:43% 43% 48% 48%;box-shadow:0 -11px 0 8px var(--hair)}
+.v16-portrait[data-person=souichiro]::before{box-shadow:0 -14px 0 8px var(--hair),0 -25px 0 0 #9d8d80}
+.v18-testimony-meter{display:flex;gap:6px;margin:9px 0 13px;max-width:160px}.v18-testimony-meter span{height:2px;flex:1;background:#a77c54}.v18-testimony-meter span:last-child{background:#7c4237}
+#statement.v18-contradicted{border-left:5px solid #a14e43!important;background:#efe0c7!important}
+.v18-rebuttal-flash[hidden]{display:none!important}.v18-rebuttal-flash{position:fixed;inset:0;z-index:11000;display:grid;place-items:center;padding:18px;background:#1b1310e8;backdrop-filter:blur(4px)}
+.v18-flash-paper{width:min(100%,600px);padding:32px;border:9px double #845f45;background:linear-gradient(135deg,#f1e2c8,#c8a780);color:#3c291e;box-shadow:0 25px 70px #000a;position:relative;animation:v18-arrive .35s ease-out}
+.v18-flash-stamp{display:block;width:max-content;transform:rotate(-12deg);border:3px double #8f3d38;padding:5px 13px;margin-bottom:17px;color:#8f3d38;font-size:27px;font-weight:bold;letter-spacing:8px}
+.v18-flash-paper strong{display:block;font-size:26px}.v18-flash-paper p{font-size:18px;line-height:1.8}.v18-flash-paper button{background:#673c31;color:#f8e8d0;border:1px solid #42251e;padding:11px 20px;cursor:pointer}
+.v18-flash-paper button:focus-visible{outline:3px solid #9e4d42;outline-offset:4px}
+.v17-stage{background:radial-gradient(ellipse at 50% 25%,#78564c 0%,#3c2b26 52%,#18110f 100%)}
+.v17-stage-portrait[data-speaker="藤原宗一郎"]{box-shadow:inset 0 0 70px #a44a3970}.v17-stage-portrait[data-speaker="藤原澪"]{box-shadow:inset 0 0 70px #b18d9e55}
+.v17-stage-portrait[data-speaker="旁白"]{opacity:.65}
+@keyframes v18-arrive{from{opacity:0;transform:scale(.9) rotate(-1deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@media(max-width:650px){.v16-portrait{min-height:145px}.v18-flash-paper{padding:18px}.v18-flash-paper strong{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.v18-flash-paper{animation:none}}
+
+/* V31 證物詳情：保持復古檔案紙張風格 */
+.v31-evidence-detail{margin:12px 0 20px;padding:20px 22px;background:#f0e2c3;color:#352619;border:2px solid #ab8b61;box-shadow:4px 6px 0 #23170d66;}
+.v31-evidence-detail[hidden]{display:none!important}.v31-detail-top small{font-size:11px;letter-spacing:2px;color:#77543a}.v31-detail-top h3{margin:7px 0 14px;font-size:23px;border-bottom:1px solid #b69b77;padding-bottom:10px}.v31-evidence-detail dl{display:grid;grid-template-columns:90px minmax(0,1fr);gap:12px 16px;line-height:1.75;margin:0}.v31-evidence-detail dt{font-weight:800;color:#75452f}.v31-evidence-detail dd{margin:0;overflow-wrap:anywhere}.v31-evidence-tip{font-size:13px;color:#73583d;border-top:1px dashed #b69b77;padding-top:10px;margin-bottom:0}.v16-evidence-card:focus-visible{outline:4px solid #d99242;outline-offset:4px}@media(max-width:600px){.v31-evidence-detail{padding:15px}.v31-evidence-detail dl{grid-template-columns:1fr;gap:3px}.v31-evidence-detail dd{margin-bottom:9px}}
+
+/* V32：將證物詳情與線索選取分離 */
+.v32-evidence-item{display:flex;flex-direction:column;gap:8px;min-width:0}.v32-evidence-item .v16-evidence-card{width:100%}.v32-pick{padding:9px 10px;border:1px solid #806248;border-radius:5px;background:#f0e3c9;color:#382819;cursor:pointer;font:inherit}.v32-pick[aria-pressed="true"]{background:#624332;color:#fff}
+
+/* V35: 固定話題與自由問答分開 */
+.interview-mode-switch{display:flex;gap:8px;margin:14px 0}.interview-mode-switch button{flex:1;padding:12px;border:1px solid #8c6543;border-radius:7px;background:#d1b78e;color:#35251a;cursor:pointer;font-weight:800}.interview-mode-switch button[aria-selected=true]{background:#6a4030;color:#ffedce}
+#interview-fixed-panel[hidden],#interview-ai-panel[hidden]{display:none!important}
+#ai-chat-history{display:flex;flex-direction:column;gap:12px;min-height:210px;max-height:360px;overflow:auto;padding:16px;background:#f4e7ca;border:2px solid #9c7855;border-radius:9px}
+#ai-chat-history .ai-bubble{padding:12px 15px;border-radius:13px;max-width:85%;line-height:1.7;margin:0;background:#e2caa4;color:#342519;align-self:flex-start;overflow-wrap:anywhere}
+#ai-chat-history .ai-user{align-self:flex-end;background:#704839;color:#fff2d8}
+#ai-question-form{display:flex;flex-direction:column;gap:9px;margin-top:12px}#ai-question{width:100%;box-sizing:border-box;min-height:75px;padding:12px;background:#fff5dd;color:#35251a;border:1px solid #9a7855;border-radius:7px}#ai-send{align-self:flex-end;background:#754534;color:#fff0d5;border-radius:6px;padding:10px 22px;border:0;cursor:pointer}
+
+/* V36 推理條件檢查清單 */
+.v36-condition-panel{margin:1rem 0 1.3rem;padding:1rem 1.2rem;border:1px solid #a98862;border-radius:10px;background:#f1e5ce;color:#38291e;box-shadow:inset 0 0 0 3px rgba(255,255,255,.3)}
+.v36-condition-panel h3{margin:0 0 .35rem;font-size:1.12rem;color:#523521}
+.v36-condition-count{margin:.25rem 0 .75rem;font-weight:700;color:#795b3e}
+.v36-condition-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:.5rem .85rem;list-style:none;padding:0;margin:0}
+.v36-condition-list li{display:flex;align-items:flex-start;gap:.5rem;padding:.5rem .65rem;border-radius:6px;background:rgba(255,255,255,.4);line-height:1.5}
+.v36-condition-list .is-done{color:#426344;background:rgba(92,132,85,.12)}
+.v36-condition-list .is-pending{color:#794b38}
+.v36-condition-marker{font-weight:900;flex:none;min-width:1.2em}
+
+.v40-archive-link{display:inline-block;margin:12px 0 4px 12px;padding:12px 18px;background:#69402e;color:#fff0d4;border:1px solid #a47b4f;border-radius:6px;text-decoration:none;font-weight:bold}.v40-archive-link:hover{background:#855137}
