@@ -1,7 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": null,
-  "functions": { "app.py": { "maxDuration": 30 } },
-  "rewrites": [{ "source": "/(.*)", "destination": "/app.py" }]
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/app.py"
+    }
+  ]
 }
