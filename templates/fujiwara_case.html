@@ -1,4 +1,196 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>牆後的第三聲｜藤原山莊</title><link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-case.css') }}"><link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-v21.css') }}?v=39"></head><body><div class="app"><div class="case-hub-back"><a href="/cases/fujiwara">← 返回案件介紹</a></div><header class="mast"><div><small>UNSOLVED FILES · CASE 001</small><h1>牆後的第三聲 <span id="current-scene-title"></span></h1></div><button id="reset" class="small">重新調查</button></header><nav id="case-page-nav" class="case-page-nav" aria-label="遊戲功能頁面"><a data-page="investigate" href="?page=investigate">現場調查</a><a data-page="interview" href="?page=interview">人物訊問</a><a data-page="evidence" href="?page=evidence">證物與線索</a><a data-page="deduction" href="?page=deduction">推理分析</a><a data-page="report" href="?page=report">結案報告</a></nav><p class="page-guide" id="case-page-guide" aria-live="polite"></p><main id="case-main"><section data-case-page="investigate" class="scene" data-location="room" aria-label="可互動調查場景"><div class="scene-art" role="img" aria-label="目前調查場景"></div><div class="scene-vignette"></div><div id="hotspots"></div><div id="popup" class="popup" hidden><button id="close" class="close" aria-label="關閉調查視窗">×</button><small>現場調查 / FIELD NOTES</small><h2 id="popup-title"></h2><p id="popup-text"></p><p id="popup-hint" class="hint"></p></div></section><section data-case-page="investigate" class="toolbar"><div><small>調查進度</small><p id="progress" aria-live="polite"></p></div><div class="toolbar-actions"><button id="connect">關聯：舊照片 × 建築圖面</button></div></section><section data-case-page="interview" class="interrogation" aria-labelledby="interrogation-heading">
-  <div class="interrogation-head"><div><small>WITNESS STATEMENTS / 證人詢問</small><h2 id="interrogation-heading">人物詢問與證詞反駁</h2></div><p id="interrogation-status" aria-live="polite"></p></div>
-  <div class="witness-layout"><div><div id="witness-list" class="witness-list" aria-label="選擇詢問人物"></div><p class="witness-tip">可以自由切換所有人物並詢問已解鎖話題；部分問題需要先取得證物。</p></div><div class="testimony"><div class="v16-character"><div id="v16-portrait" class="v16-portrait" aria-hidden="true"><span id="v16-monogram">?</span></div><div class="v16-character-heading"><span id="v16-role">人物檔案</span><h3 id="witness-name">選擇一位人物</h3><p id="witness-description"></p></div></div><div class="interview-mode-switch" role="tablist" aria-label="訊問方式"><button type="button" id="interview-fixed-tab" role="tab" aria-selected="true" aria-controls="interview-fixed-panel">固定話題</button><button type="button" id="interview-ai-tab" role="tab" aria-selected="false" aria-controls="interview-ai-panel">自由問答</button></div><div id="interview-fixed-panel" role="tabpanel"><div id="topic-list" class="topic-list"></div><div class="v18-testimony-meter" aria-hidden="true"><span></span><span></span><span></span></div><div id="v17-emotion" class="v17-emotion" aria-live="polite">等待證言</div><blockquote id="statement" class="statement">尚未選擇證詞。</blockquote><div id="rebuttal" class="rebuttal" hidden><label for="rebuttal-evidence">出示證物</label><select id="rebuttal-evidence"><option value="">請選擇證物</option></select><button id="submit-rebuttal">提出反駁</button></div><p id="interrogation-feedback" role="status" aria-live="polite"></p></div><section id="interview-ai-panel" role="tabpanel" hidden class="ai-interview" aria-labelledby="ai-interview-title"><h3 id="ai-interview-title">自由詢問（Gemini）</h3><p class="ai-help">向目前選擇的人物輸入問題。關鍵問題可能觸發經劇情核對的證言摘要，自動收錄手札「待查證證言」；正式證物與通關仍須由固定話題和蒐證取得。</p><div id="ai-chat-history" class="ai-chat-history" role="log" aria-live="polite"></div><form id="ai-question-form"><label for="ai-question">你的問題</label><textarea id="ai-question" rows="2" maxlength="400" placeholder="例如：你最後一次見到藤原凜是什麼時候？" required></textarea><button type="submit" id="ai-send">送出詢問</button></form><p id="ai-status" role="status" aria-live="polite"></p></section></div></div>
-</section><section data-case-page="deduction" class="finale" aria-labelledby="finale-heading"><div class="finale-head"><small>FINAL DEDUCTION / 案件重建</small><h2 id="finale-heading">最後的推理</h2><p id="finale-status" aria-live="polite"></p></div><p>完成必要調查與證詞反駁後，依序提交六項案件重建。錯誤答案不會扣分，也不會鎖死進度。</p><div class="v16-confrontation" id="v16-confrontation"><span class="v16-stamp">機密檔案</span><p id="v16-confrontation-line">證據尚未齊全。請先完成調查，再提出最後的質問。</p><div class="v16-confrontation-meter"><span id="v16-confrontation-progress"></span></div></div><div id="finale-content"></div><div id="ending" hidden aria-live="polite"></div></section><section data-case-page="evidence" id="v16-board" class="v16-board" aria-labelledby="v16-board-title"><div class="v16-board-heading"><div><small>CONNECTION BOARD / 案件關聯</small><h2 id="v16-board-title">復古線索板</h2></div><p id="v16-board-count" aria-live="polite">尚未取得證物</p></div><p class="v16-board-help">點擊證物卡片查看詳情；使用「選取此證物」挑選兩項，再按「關聯線索」。目前唯一可成立的配對為「客房舊照片＋原始建築圖面」。</p><div id="v16-board-cards" class="v16-board-cards" aria-label="已取得的證物卡片"></div><section id="v31-evidence-detail" class="v31-evidence-detail" aria-live="polite" aria-label="證物詳細資料" hidden><div class="v31-detail-top"><small>EVIDENCE RECORD / 證物調查檔案</small><h3 id="v31-evidence-name"></h3></div><dl><dt>取得來源</dt><dd id="v31-evidence-source"></dd><dt>證物描述</dt><dd id="v31-evidence-description"></dd><dt>調查價值</dt><dd id="v31-evidence-use"></dd><dt>目前限制</dt><dd id="v31-evidence-caution"></dd></dl><p class="v31-evidence-tip">再次點選其他證物即可切換檔案；需要關聯時請使用證物卡片下方的選取按鈕。</p></section><div class="v16-board-actions"><p id="v16-board-selection" aria-live="polite">尚未選取線索</p><button id="v16-board-link" type="button">關聯線索</button><button id="v16-board-clear" type="button">清除選取</button></div><p id="v16-board-feedback" role="status" aria-live="polite"></p></section><section class="journal"><div><small>DETECTIVE'S NOTEBOOK</small><h2>調查手札</h2><ul id="notes"></ul></div><div><small>EVIDENCE FILES</small><h2>證物檔案</h2><ul id="evidence"></ul></div></section></main><nav data-case-page="investigate" class="locations" aria-label="地點切換"><button data-loc="room">東側客房</button><button data-loc="study">山莊書房</button><button data-loc="hall">東側走廊</button></nav><div class="integration-note">案件調查原型：人物肖像與對質演出仍在持續完善。<a href="/">返回案件首頁</a></div><div id="notice" role="status" aria-live="polite"></div></div><div id="v18-rebuttal-flash" class="v18-rebuttal-flash" role="status" aria-live="assertive" hidden><div class="v18-flash-paper"><span class="v18-flash-stamp">矛盾</span><strong id="v18-flash-title">證詞已被推翻</strong><p id="v18-flash-message"></p><button type="button" id="v18-flash-close">返回詢問</button></div></div><div id="v17-cutscene" class="v17-cutscene" role="dialog" aria-modal="true" aria-labelledby="v17-scene-title" hidden><div class="v17-stage"><div class="v17-stage-top"><span>CASE 001 · FINAL TESTIMONY</span><button type="button" id="v17-skip">略過演出</button></div><div class="v17-stage-portrait" id="v17-stage-portrait" aria-hidden="true"><span id="v17-stage-mark">宗</span></div><div class="v17-stage-panel"><small id="v17-scene-count"></small><h2 id="v17-scene-title">最後的證言</h2><strong id="v17-speaker"></strong><p id="v17-line"></p><button type="button" id="v17-next">繼續 <span aria-hidden="true">›</span></button></div></div></div><script>if(new URLSearchParams(location.search).get('new')==='1'){try{localStorage.removeItem('fujiwara_manor_v12')}catch(e){}history.replaceState(null,'',location.pathname)}</script><script src="{{ url_for('static',filename='js/fujiwara-case.js') }}?v=39"></script><script src="{{ url_for('static',filename='js/fujiwara-v21.js') }}"></script><link rel="stylesheet" href="/static/css/fujiwara-notebook.css"><script defer src="/static/js/fujiwara-notebook.js"></script><link rel="stylesheet" href="/static/css/fujiwara-pages.css"><script defer src="/static/js/fujiwara-pages.js"></script><link rel="stylesheet" href="/static/css/fujiwara-ai.css"><script defer src="/static/js/fujiwara-ai.js"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>牆後的第三聲｜藤原山莊</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-case.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-v21.css') }}?v=39">
+</head>
+
+<body>
+    <div class="app">
+        <div class="case-hub-back"><a href="/cases/fujiwara">← 返回案件介紹</a></div>
+        <header class="mast">
+            <div><small>UNSOLVED FILES · CASE 001</small>
+                <h1>牆後的第三聲 <span id="current-scene-title"></span></h1>
+            </div><button id="reset" class="small">重新調查</button></header>
+        <nav id="case-page-nav" class="case-page-nav" aria-label="遊戲功能頁面"><a data-page="investigate" href="?page=investigate">現場調查</a><a data-page="interview" href="?page=interview">人物訊問</a><a data-page="evidence" href="?page=evidence">證物與線索</a><a data-page="deduction" href="?page=deduction">推理分析</a><a data-page="report"
+                href="?page=report">結案報告</a></nav>
+        <p class="page-guide" id="case-page-guide" aria-live="polite"></p>
+        <main id="case-main">
+            <section data-case-page="investigate" class="scene" data-location="room" aria-label="可互動調查場景">
+                <div class="scene-art" role="img" aria-label="目前調查場景"></div>
+                <div class="scene-vignette"></div>
+                <div id="hotspots"></div>
+                <div id="popup" class="popup" hidden><button id="close" class="close" aria-label="關閉調查視窗">×</button><small>現場調查 / FIELD NOTES</small>
+                    <h2 id="popup-title"></h2>
+                    <p id="popup-text"></p>
+                    <p id="popup-hint" class="hint"></p>
+                </div>
+            </section>
+            <section data-case-page="investigate" class="toolbar">
+                <div><small>調查進度</small>
+                    <p id="progress" aria-live="polite"></p>
+                </div>
+                <div class="toolbar-actions"><button id="connect">關聯：舊照片 × 建築圖面</button></div>
+            </section>
+            <section data-case-page="interview" class="interrogation" aria-labelledby="interrogation-heading">
+                <div class="interrogation-head">
+                    <div><small>WITNESS STATEMENTS / 證人詢問</small>
+                        <h2 id="interrogation-heading">人物詢問與證詞反駁</h2>
+                    </div>
+                    <p id="interrogation-status" aria-live="polite"></p>
+                </div>
+                <div class="witness-layout">
+                    <div>
+                        <div id="witness-list" class="witness-list" aria-label="選擇詢問人物"></div>
+                        <p class="witness-tip">選擇人物後直接輸入問題；證據反駁在對話下方進行。</p>
+                    </div>
+                    <div class="testimony">
+                        <div class="v16-character">
+                            <div id="v16-portrait" class="v54-portrait" aria-hidden="true"><img class="v53-portrait-img" id="v53-portrait-img" src="{{ url_for('static', filename='art/portraits/mio-clean.webp') }}" alt="" decoding="async"><span id="v16-monogram">?</span></div>
+                            <div class="v16-character-heading"><span id="v16-role">人物檔案</span>
+                                <h3 id="witness-name">選擇一位人物</h3>
+                                <p id="witness-description"></p>
+                            </div>
+                        </div>
+                        <p class="v45-interview-hint">自由詢問，使用下方提示或出示證物。</p>
+                        <div id="interview-fixed-panel" role="tabpanel">
+                            <div id="topic-list" class="topic-list"></div>
+                            <div class="v18-testimony-meter" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <div id="v17-emotion" class="v17-emotion" aria-live="polite">等待證言</div>
+                            <blockquote id="statement" class="statement">尚未選擇證詞。</blockquote>
+                            <div id="rebuttal" class="rebuttal" hidden><label for="rebuttal-evidence">出示證物</label><select id="rebuttal-evidence"><option value="">請選擇證物</option></select><button id="submit-rebuttal">提出反駁</button></div>
+                            <p id="interrogation-feedback" role="status" aria-live="polite"></p>
+                        </div>
+                        <section id="interview-ai-panel" class="ai-interview" aria-labelledby="ai-interview-title">
+                            <h3 id="ai-interview-title">人物對話</h3>
+                            <p class="ai-help">左側詢問與出示證物，右側依時間順序顯示對話。</p>
+                            <div class="case-interview-columns">
+                                <div class="case-interview-controls" aria-label="詢問與證物操作">
+                            <form id="ai-question-form"><label for="ai-question">你的問題</label><textarea id="ai-question" rows="2" maxlength="400" placeholder="例如：你最後一次見到藤原凜是什麼時候？" required></textarea><button type="submit" id="ai-send">送出詢問</button></form>
+                            <p id="ai-status" role="status" aria-live="polite"></p>
+                            <details id="v52-help" class="v54-disclosure">
+                                <summary>詢問提示 <span>不知道問什麼？點這裡</span></summary>
+                                <p>點擊問題只會填入輸入框。</p>
+                                <div id="v52-prompts"></div>
+                            </details>
+                            <details id="v52-proof" class="v54-disclosure">
+                                <summary>證據反駁 <span>出示已取得的證物</span></summary>
+                                <p>選擇可反駁的證詞與證物。</p><label for="v52-claim">證詞</label><select id="v52-claim"></select><label for="v52-evidence">證物</label><select id="v52-evidence"></select><button type="button" id="v52-rebut">出示證物並反駁</button>
+                                <p id="v52-feedback" role="status"></p>
+                            </details>
+                                </div>
+                                <div class="case-interview-log" aria-label="人物對話紀錄">
+                                    <h4>訊問紀錄</h4>
+                                    <div id="v52-conversation">
+                                        <div id="ai-chat-history" class="ai-chat-history" role="log" aria-live="polite"></div>
+                                        <div id="v52-story-log" role="log" aria-label="劇情證詞紀錄"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+            <section data-case-page="deduction" class="finale" aria-labelledby="finale-heading">
+                <div class="finale-head"><small>FINAL DEDUCTION / 案件重建</small>
+                    <h2 id="finale-heading">最後的推理</h2>
+                    <p id="finale-status" aria-live="polite"></p>
+                </div>
+                <p>完成必要調查與證詞反駁後，依序提交六項案件重建。錯誤答案不會扣分，也不會鎖死進度。</p>
+                <div class="v16-confrontation" id="v16-confrontation"><span class="v16-stamp">機密檔案</span>
+                    <p id="v16-confrontation-line">證據尚未齊全。請先完成調查，再提出最後的質問。</p>
+                    <div class="v16-confrontation-meter"><span id="v16-confrontation-progress"></span></div>
+                </div>
+                <div id="finale-content"></div>
+                <div id="ending" hidden aria-live="polite"></div>
+            </section>
+            <section data-case-page="evidence" id="v16-board" class="v16-board" aria-labelledby="v16-board-title">
+                <div class="v16-board-heading">
+                    <div><small>CONNECTION BOARD / 案件關聯</small>
+                        <h2 id="v16-board-title">復古線索板</h2>
+                    </div>
+                    <p id="v16-board-count" aria-live="polite">尚未取得證物</p>
+                </div>
+                <p class="v16-board-help">點擊證物卡片查看詳情；使用「選取此證物」挑選兩項，再按「關聯線索」。可嘗試關聯不同證物，建立多條有根據的證據鏈；推論不代表已證明兇手。</p>
+                <div id="v16-board-cards" class="v16-board-cards" aria-label="已取得的證物卡片"></div>
+                <section id="v31-evidence-detail" class="v31-evidence-detail" aria-live="polite" aria-label="證物詳細資料" hidden>
+                    <div class="v31-detail-top"><small>EVIDENCE RECORD / 證物調查檔案</small>
+                        <h3 id="v31-evidence-name"></h3>
+                    </div>
+                    <dl><dt>取得來源</dt>
+                        <dd id="v31-evidence-source"></dd><dt>證物描述</dt>
+                        <dd id="v31-evidence-description"></dd><dt>調查價值</dt>
+                        <dd id="v31-evidence-use"></dd><dt>目前限制</dt>
+                        <dd id="v31-evidence-caution"></dd>
+                    </dl>
+                    <p class="v31-evidence-tip">再次點選其他證物即可切換檔案；需要關聯時請使用證物卡片下方的選取按鈕。</p>
+                </section>
+                <div class="v16-board-actions">
+                    <p id="v16-board-selection" aria-live="polite">尚未選取線索</p><button id="v16-board-link" type="button">關聯線索</button><button id="v16-board-clear" type="button">清除選取</button></div>
+                <p id="v16-board-feedback" role="status" aria-live="polite"></p>
+                <div id="v43-board-chain" class="v43-board-chain" aria-label="已建立的證據鏈"></div>
+            </section>
+            <section class="journal">
+                <div><small>DETECTIVE'S NOTEBOOK</small>
+                    <h2>調查手札</h2>
+                    <ul id="notes"></ul>
+                </div>
+                <div><small>EVIDENCE FILES</small>
+                    <h2>證物檔案</h2>
+                    <ul id="evidence"></ul>
+                </div>
+            </section>
+        </main>
+        <nav data-case-page="investigate" class="locations" aria-label="地點切換"><button data-loc="room">東側客房</button><button data-loc="study">山莊書房</button><button data-loc="hall">東側走廊</button></nav>
+        <div class="integration-note">案件調查原型：人物肖像與對質演出仍在持續完善。<a href="/">返回案件首頁</a></div>
+        <div id="notice" role="status" aria-live="polite"></div>
+    </div>
+    <div id="v18-rebuttal-flash" class="v18-rebuttal-flash" role="status" aria-live="assertive" hidden>
+        <div class="v18-flash-paper"><span class="v18-flash-stamp">矛盾</span><strong id="v18-flash-title">證詞已被推翻</strong>
+            <p id="v18-flash-message"></p><button type="button" id="v18-flash-close">返回詢問</button></div>
+    </div>
+    <div id="v17-cutscene" class="v17-cutscene" role="dialog" aria-modal="true" aria-labelledby="v17-scene-title" hidden>
+        <div class="v17-stage">
+            <div class="v17-stage-top"><span>CASE 001 · FINAL TESTIMONY</span><button type="button" id="v17-skip">略過演出</button></div>
+            <div class="v17-stage-portrait" id="v17-stage-portrait" aria-hidden="true"><span id="v17-stage-mark">宗</span></div>
+            <div class="v17-stage-panel">
+                <div class="v48-timeline"><span id="v48-progress"></span></div><small id="v17-scene-count"></small>
+                <h2 id="v17-scene-title">最後的證言</h2><strong id="v17-speaker"></strong>
+                <p id="v17-line"></p><button type="button" id="v48-pause">暫停自動播放</button><button type="button" id="v17-next">繼續 <span aria-hidden="true">›</span></button></div>
+        </div>
+    </div>
+    <script>
+        if (new URLSearchParams(location.search).get('new') === '1') {
+            try {
+                localStorage.removeItem('fujiwara_manor_v12')
+            } catch (e) {}
+            history.replaceState(null, '', location.pathname)
+        }
+    </script>
+    <script src="{{ url_for('static',filename='js/fujiwara-case.js') }}?v=43"></script>
+    <script src="{{ url_for('static',filename='js/fujiwara-v21.js') }}"></script>
+    <link rel="stylesheet" href="/static/css/fujiwara-notebook.css">
+    <script defer src="/static/js/fujiwara-notebook.js"></script>
+    <link rel="stylesheet" href="/static/css/fujiwara-pages.css">
+    <script defer src="/static/js/fujiwara-pages.js"></script>
+    <link rel="stylesheet" href="/static/css/fujiwara-ai.css">
+    <script defer src="/static/js/fujiwara-ai.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-interview-guide.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-interview-unified.css') }}?v=45">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-cutscene-v48.css') }}?v=48">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-archive-modal.css') }}?v=50">
+    <script defer src="{{ url_for('static',filename='js/fujiwara-archive-modal.js') }}?v=50"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-v52.css') }}?v=52">
+    <script defer src="{{ url_for('static',filename='js/fujiwara-v52.js') }}?v=52"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-portrait-v53.css') }}?v=53">
+    <script defer src="{{ url_for('static',filename='js/fujiwara-portrait-v53.js') }}?v=53"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/fujiwara-portrait-chat-v54.css') }}?v=54">
+    <link rel="stylesheet" href="/static/css/fujiwara-chat-alignment.css?v=1">
+    <link rel="stylesheet" href="/static/css/fujiwara-interview-columns.css?v=1">
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+/* CASE 001: only the interview input and conversation area; portraits untouched. */
+#interview-ai-panel .case-interview-columns{display:grid;grid-template-columns:minmax(260px,38%) minmax(0,1fr);gap:16px;align-items:start;margin-top:12px}
+#interview-ai-panel .case-interview-controls,#interview-ai-panel .case-interview-log{min-width:0;border:1px solid #bd9c70;border-radius:10px;background:#f4e4c5;padding:14px;box-sizing:border-box}
+#interview-ai-panel .case-interview-controls{display:flex;flex-direction:column;gap:12px}
+#interview-ai-panel .case-interview-log h4{margin:0 0 12px;color:#563626;font-size:18px}
+#interview-ai-panel .case-interview-log #v52-conversation{height:530px!important;max-height:530px!important;min-height:320px!important;overflow-y:auto!important;background:#f0dfbf}
+#interview-ai-panel .case-interview-controls #ai-question-form{grid-template-columns:1fr!important}
+#interview-ai-panel .case-interview-controls #ai-question-form label{grid-column:1!important}
+#interview-ai-panel .case-interview-controls #ai-send{justify-self:start!important}
+#interview-ai-panel .case-interview-controls .v54-disclosure{width:100%;box-sizing:border-box}
+@media(max-width:850px){#interview-ai-panel .case-interview-columns{grid-template-columns:1fr}#interview-ai-panel .case-interview-log #v52-conversation{height:360px!important;max-height:360px!important}}

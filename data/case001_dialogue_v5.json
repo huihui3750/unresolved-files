@@ -1,0 +1,386 @@
+{
+  "schema_version": "review-1",
+  "warning": "劇本審核資料，不能直接覆蓋目前的 case001_public_knowledge.json；反駁旗標為語意代號，需映射到實際程式",
+  "records": [
+    {
+      "character_id": "mio",
+      "character": "藤原澪",
+      "topic_id": "last_seen_rin",
+      "topic_label": "最後見到凜／姊姊",
+      "reply": "是在她出事以前。確切是哪一天、幾點，我不想憑印象亂說。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E_with_unconfirmed_time",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "mio",
+      "character": "藤原澪",
+      "topic_id": "rin_diary",
+      "topic_label": "凜的日記／敲擊聲",
+      "reply": "姊姊在日記裡記下了奇怪的敲擊聲。聲音從哪裡來，我也不知道。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "mio",
+      "character": "藤原澪",
+      "topic_id": "lawyer_letter_contents",
+      "topic_label": "律師信內容",
+      "reply": "姊姊曾聯絡律師，但在看到信之前，我不能憑猜測說出內容。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "mio",
+      "character": "藤原澪",
+      "topic_id": "lawyer_letter_contents",
+      "topic_label": "律師信內容",
+      "reply": "信裡提到叔父曾由維修區接近客房，並要求交出帳務文件。那是姊姊的陳述，還需要其他證據核對。",
+      "requires_evidence": [
+        "ev_lawyer_letter"
+      ],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "mio",
+      "character": "藤原澪",
+      "topic_id": "responsibility",
+      "topic_label": "兇手／責任",
+      "reply": "我懷疑有人隱瞞，但不會因為懷疑就指認兇手。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "mio",
+      "character": "藤原澪",
+      "topic_id": "case_aftermath",
+      "topic_label": "結案後",
+      "reply": "姊姊留下的疑問，終於有人願意認真查清。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": true,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "shizue",
+      "character": "松本靜江",
+      "topic_id": "last_seen_rin",
+      "topic_label": "最後見到凜",
+      "reply": "事故前我見過凜小姐，但確切時刻不敢說。我沒有看見她出事的經過。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E_with_unconfirmed_time",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "shizue",
+      "character": "松本靜江",
+      "topic_id": "strange_sound",
+      "topic_label": "異響／第三聲",
+      "reply": "我確實聽見過異響，但不知道來源，也不能說那就是凜小姐受傷的聲音。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "shizue",
+      "character": "松本靜江",
+      "topic_id": "soichiro_whereabouts",
+      "topic_label": "宗一郎行蹤",
+      "reply": "當年我以為宗一郎先生一直在書房，但那只是我的印象。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "shizue",
+      "character": "松本靜江",
+      "topic_id": "soichiro_whereabouts",
+      "topic_label": "宗一郎行蹤",
+      "reply": "我只能證明我見到他的那一刻，他在書房；其他時間我沒有親眼看見。",
+      "requires_evidence": [],
+      "requires_rebuttal": [
+        "whereabouts_rebutted"
+      ],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "shizue",
+      "character": "松本靜江",
+      "topic_id": "case_aftermath",
+      "topic_label": "結案後",
+      "reply": "我把信任當成目擊，當年說得太肯定了。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": true,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "naoto",
+      "character": "相馬直人",
+      "topic_id": "last_seen_rin",
+      "topic_label": "最後見到凜",
+      "reply": "七年前我還沒在山莊工作，沒有見過當年的現場。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E_with_unconfirmed_time",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "naoto",
+      "character": "相馬直人",
+      "topic_id": "strange_sound",
+      "topic_label": "暖氣／敲擊聲",
+      "reply": "管線有可能發出金屬聲，但不能因此斷言七年前的聲音就是暖氣。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "naoto",
+      "character": "相馬直人",
+      "topic_id": "second_entrance",
+      "topic_label": "第二入口",
+      "reply": "要確認舊客房配置，還得看當年的原始圖面。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "naoto",
+      "character": "相馬直人",
+      "topic_id": "second_entrance",
+      "topic_label": "第二入口",
+      "reply": "原始圖面標有維修通道；它證明構造存在，不能單靠圖面認定誰走過。",
+      "requires_evidence": [
+        "ev_original_plan"
+      ],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "naoto",
+      "character": "相馬直人",
+      "topic_id": "door_sealing_date",
+      "topic_label": "封門日期",
+      "reply": "施工紀錄能用來核對封門日期，但不能單靠日期證明是誰下令。",
+      "requires_evidence": [
+        "ev_sealing_order"
+      ],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "naoto",
+      "character": "相馬直人",
+      "topic_id": "responsibility",
+      "topic_label": "兇手／責任",
+      "reply": "我能解釋設備和施工紀錄，不能代替調查判定誰有罪。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "last_seen_rin",
+      "topic_label": "最後見到凜",
+      "reply": "七年前的每次見面，誰能一一記得？你有證據認為我那晚見過她？",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E_with_unconfirmed_time",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "second_entrance",
+      "topic_label": "第二入口",
+      "reply": "東側客房只有正門。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "second_entrance",
+      "topic_label": "第二入口",
+      "reply": "圖面確實有維修門，但它早就封閉了。",
+      "requires_evidence": [],
+      "requires_rebuttal": [
+        "entrance_rebutted"
+      ],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "door_sealing_date",
+      "topic_label": "封門日期",
+      "reply": "那扇門在事故前就封好了。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "door_sealing_date",
+      "topic_label": "封門日期",
+      "reply": "施工單日期確實在事故後，我原先的說法不準確。",
+      "requires_evidence": [],
+      "requires_rebuttal": [
+        "sealing_rebutted"
+      ],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "soichiro_whereabouts",
+      "topic_label": "事故當晚行蹤",
+      "reply": "我沒有去過東側維修區。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "soichiro_whereabouts",
+      "topic_label": "事故當晚行蹤",
+      "reply": "我去過維修區，但只是例行檢查。這不代表我進過凜的房間。",
+      "requires_evidence": [],
+      "requires_rebuttal": [
+        "whereabouts_rebutted"
+      ],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "ledger_dispute",
+      "topic_label": "帳冊爭議",
+      "reply": "我從來沒有找凜要過帳冊。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "ledger_dispute",
+      "topic_label": "帳冊爭議",
+      "reply": "我們談過帳務文件，但這不代表我傷害她。",
+      "requires_evidence": [],
+      "requires_rebuttal": [
+        "ledger_rebutted"
+      ],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "responsibility",
+      "topic_label": "兇手／責任",
+      "reply": "你沒有證據，就別把猜測當成結論。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": false,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    },
+    {
+      "character_id": "soichiro",
+      "character": "藤原宗一郎",
+      "topic_id": "responsibility",
+      "topic_label": "最終對質後",
+      "reply": "我那晚從維修通道進入房間，想拿回帳冊。拉扯時她撞上家具……我害怕，拿了帳冊就走了。",
+      "requires_evidence": [],
+      "requires_rebuttal": [],
+      "requires_ending": true,
+      "canon_status": "E",
+      "source": "CASE001_統一劇情設定_V4.md",
+      "review_required": true
+    }
+  ]
+}

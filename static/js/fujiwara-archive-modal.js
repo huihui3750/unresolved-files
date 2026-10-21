@@ -1,0 +1,12 @@
+/* Same-page archive reader: fetch and embed content without iframe. */
+(()=>{'use strict';let modal,lastFocus;
+function close(){if(!modal)return;modal.remove();modal=null;document.body.classList.remove('v50-archive-open');lastFocus?.focus?.()}
+async function open(link){lastFocus=link;modal=document.createElement('div');modal.className='v50-archive-overlay';modal.innerHTML='<section class="v50-archive-window" role="dialog" aria-modal="true" aria-label="通關劇本與人物小傳"><header class="v50-archive-header"><span>CASE 001 · 封存檔案收藏冊</span><button type="button" class="v50-archive-close">×</button></header><div class="v52-archive-body" role="status">正在載入收藏冊……</div></section>';document.body.append(modal);document.body.classList.add('v50-archive-open');modal.querySelector('button').onclick=close;modal.addEventListener('click',e=>{if(e.target===modal)close()});modal.querySelector('button').focus();
+try{const res=await fetch('/cases/fujiwara/archive',{credentials:'same-origin'});if(!res.ok)throw Error('HTTP '+res.status);const doc=new DOMParser().parseFromString(await res.text(),'text/html');doc.querySelectorAll('script,iframe,form').forEach(x=>x.remove());const body=modal?.querySelector('.v52-archive-body');if(!body)return;
+const content=doc.querySelector('main')||doc.body;content.querySelectorAll('a[href^="/"],a[href^="http"]').forEach(a=>a.setAttribute('target','_blank'));body.replaceChildren(...Array.from(content.children).map(n=>n.cloneNode(true)));
+for(const file of ['archive-v40.js','archive-v41.js']){const tag=document.createElement('script');tag.src='/static/js/'+file;tag.async=false;modal.append(tag)}
+const styles=[...doc.querySelectorAll('link[rel="stylesheet"]')];for(const s of styles){const href=s.getAttribute('href');if(href&&href.startsWith('/static/')){const link=document.createElement('link');link.rel='stylesheet';link.href=href;modal.append(link)}}
+}catch(err){const body=modal?.querySelector('.v52-archive-body');if(body)body.textContent='收藏冊載入失敗，請確認 Flask 正常運作。錯誤：'+err.message}
+}
+document.addEventListener('click',e=>{const a=e.target.closest('a.v40-archive-link');if(a){e.preventDefault();open(a)}});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal)close()});
+})();

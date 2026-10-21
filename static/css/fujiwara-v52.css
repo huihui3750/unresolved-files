@@ -1,0 +1,21 @@
+/* Consolidated interview and portrait fixes */
+#interview-fixed-panel,.v45-interview-hint,.v18-testimony-meter,#v49-chat-log{display:none!important}
+.v16-portrait{background-repeat:no-repeat!important;background-size:contain!important;background-position:center center!important;min-width:0!important;overflow:hidden!important}
+.v16-portrait::before,.v16-portrait::after{display:none!important;content:none!important}
+.v16-portrait[data-person="mio"]{background-image:url('../art/portraits/mio-clean.webp')!important}
+.v16-portrait[data-person="shizue"]{background-image:url('../art/portraits/shizue-clean.webp')!important}
+.v16-portrait[data-person="naoto"]{background-image:url('../art/portraits/naoto-clean.webp')!important}
+.v16-portrait[data-person="souichiro"]{background-image:url('../art/portraits/souichiro-clean.webp')!important}
+#interview-ai-panel{display:flex!important;flex-direction:column;gap:12px}
+#ai-chat-history,#v52-story-log{background:#f2e0bd;border:1px solid #bda17a;border-radius:10px;padding:14px;max-height:320px;overflow-y:auto}
+#v52-story-log:empty{display:none}#v52-story-log{max-height:220px}
+.v52-msg{background:#e7d0aa;color:#4c3326;border-radius:10px;padding:10px 12px;margin:8px 0;line-height:1.65;max-width:88%}
+.v52-msg.user{margin-left:auto;background:#d3b18a}.v52-msg.system{border-left:4px solid #965047}
+#v52-help,#v52-proof{background:#f2e0bd;border:1px solid #bda17a;border-radius:10px;padding:15px;color:#503528}
+#v52-prompts{display:flex;gap:8px;flex-wrap:wrap}#v52-prompts button{background:#f9edda;color:#503528;border:1px solid #bda17a;padding:9px;border-radius:7px}
+#v52-proof label{display:block;margin:9px 0 4px}#v52-proof select{display:block;width:100%;padding:10px;background:#fff0d2;color:#503528;border:1px solid #bda17a}
+#v52-rebut{margin-top:12px;background:#71483a;color:#fff2dc;padding:11px 16px;border-radius:7px}
+
+.v52-archive-body{overflow:auto;flex:1;min-height:0;padding:20px;background:#ead7ae;color:#452b1c}.v52-archive-body main{max-width:100%}.v52-archive-body .archive-back,.v52-archive-body a[href="/"]{display:none}
+
+#v52-conversation{border:1px solid #bda17a;border-radius:10px;background:#f2e0bd;max-height:450px;overflow-y:auto;padding:8px}#v52-conversation #ai-chat-history,#v52-conversation #v52-story-log{border:0;background:transparent;border-radius:0;max-height:none;overflow:visible;padding:4px}

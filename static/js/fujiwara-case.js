@@ -9,6 +9,10 @@ if(!Array.isArray(state.finaleAnswers))state.finaleAnswers=[];
 if(typeof state.endingUnlocked!=="boolean")state.endingUnlocked=false;
 if(!Array.isArray(state.dialogues))state.dialogues=[];
 if(!Array.isArray(state.rebuttals))state.rebuttals=[];
+// 結案狀態相容性：不信任損壞或手動修改的舊存檔欄位。
+if(!Array.isArray(state.finaleAnswers))state.finaleAnswers=[];
+state.finaleAnswers=state.finaleAnswers.filter(x=>typeof x==='string');
+if(state.endingUnlocked&&state.finaleAnswers.length!==6)state.endingUnlocked=false;
 // 既有存檔欄位相容處理。
 const ITEMS={
  door:{name:'客房正門',text:'門內側的橫閂仍在。正門上鎖不代表房內從未有其他人。',hint:'注意：正門與維修門是兩個不同的出入口。'},
@@ -27,18 +31,109 @@ const ITEMS={
 const EV={ev_old_photo:'客房舊照片',ev_blueprint:'原始建築圖面',ev_inspection_permit:'檢查授權書',ev_fabric:'門框布料（待鑑別）',ev_accident_report:'事故現場紀錄',ev_sealing_order:'封板施工單',ev_entry_log:'維修出入紀錄副本',ev_shizue_diary:'靜江的私人日記',ev_rin_diary:'凜的日記',ev_lawyer_letter:'律師保存的補充信'};
 const LOC={room:{title:'東側客房',spots:[['door',14,68],['desk',37,65],['wardrobe',65,59],['wall',82,43],['service',91,70]]},study:{title:'山莊書房',spots:[['archive',22,50],['order',53,59],['permit',70,50],['blueprint',90,60]]},hall:{title:'東側走廊',spots:[['corridor',75,54],['pipe',21,43],['log',31,72]]}};
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(err){/* 隱私模式或受限環境可能無法寫入；仍可繼續本次遊玩。 */}}
-function addEvidence(id){if(id&&!state.evidence.includes(id)){state.evidence.push(id);return true}return false}
+// V14 transitional synchronization: browser clicks are not cryptographic proof.
+let v14Queue=Promise.resolve();
+function v14Post(path, payload){
+  v14Queue=v14Queue.catch(()=>{}).then(async()=>{
+    const response=await fetch(path,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    return response.json();
+  }).catch(error=>{console.warn('CASE001 後端進度同步失敗:',error);});
+  return v14Queue;
+}
+const v14EvidenceSource={
+  ev_old_photo:'desk',ev_accident_report:'archive',ev_sealing_order:'order',
+  ev_inspection_permit:'permit',ev_blueprint:'blueprint',ev_entry_log:'log',
+  ev_fabric:'service',ev_rin_diary:'mio_diary',
+  ev_shizue_diary:'shizue_diary',ev_lawyer_letter:'lawyer_letter'
+};
+// Server confirmation is the only source of truth for collected evidence.
+const pendingEvidence=new Set();
+function v14Observe(evidence,topic){
+ const object=v14EvidenceSource[evidence];
+ const endpoint=topic?'/api/fujiwara/progress/interview-evidence':'/api/fujiwara/progress/observe';
+ const payload=topic?{topic}:{object};
+ if(!object&&!topic)return Promise.resolve(false);
+ pendingEvidence.add(evidence);
+ v14Queue=v14Queue.catch(()=>{}).then(async()=>{
+  const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok||!result.ok)throw new Error(result.error||'HTTP '+response.status);
+  if(!state.evidence.includes(evidence))state.evidence.push(evidence);
+  notice('已儲存證物：'+(EV[evidence]||evidence));
+  render();
+  return true;
+ }).catch(error=>{
+  console.warn('CASE001 證物儲存失敗:',evidence,error);
+  notice('證物「'+(EV[evidence]||evidence)+'」未成功存檔：'+error.message+'。請重新調查。');
+  return false;
+ }).finally(()=>{pendingEvidence.delete(evidence)});
+ return v14Queue;
+}
+function addEvidence(id,topic){
+ if(!id||state.evidence.includes(id)||pendingEvidence.has(id))return false;
+ v14Observe(id,topic);
+ return true;
+}
 function addNote(id,title,body){if(!state.notes.some(n=>n.id===id))state.notes.push({id,title,body})}
 function notice(s){$('#notice').textContent=s}
-function render(){const evidence=$('#evidence');evidence.replaceChildren();for(const id of state.evidence){const li=document.createElement('li');li.textContent=EV[id]||id;evidence.append(li)}if(!state.evidence.length){const li=document.createElement('li');li.textContent='尚未取得證物';evidence.append(li)}const notes=$('#notes');notes.replaceChildren();for(const n of state.notes){const li=document.createElement('li');const b=document.createElement('strong');b.textContent=n.title+'：';li.append(b,document.createTextNode(n.body));notes.append(li)}if(!state.notes.length){const li=document.createElement('li');li.textContent='尚未建立推理紀錄';notes.append(li)}renderInterview();renderFinale();$('#progress').textContent=`已調查 ${state.seen.length}/${Object.keys(ITEMS).length} 個物件 · 已取得 ${state.evidence.length} 件證物 · 已建立 ${state.notes.length} 條推理`;persist()}
-function popup(item,btn){$('#popup-title').textContent=item.name;$('#popup-text').textContent=item.text;$('#popup-hint').textContent=item.hint;const sc=$('.scene').getBoundingClientRect(),r=btn.getBoundingClientRect(),p=$('#popup');p.hidden=false;const width=Math.min(330,sc.width*.9);p.style.left=Math.max(10,Math.min(r.left-sc.left+20,sc.width-width-10))+'px';p.style.top=Math.max(10,Math.min(r.top-sc.top-180,sc.height-240))+'px'}
-function inspect(btn){const id=btn.dataset.id,item=ITEMS[id];if(!item)return;const unmet=(item.requires||[]).filter(f=>!state.flags[f]);if(unmet.length){popup({...item,text:'目前無法繼續檢查。',hint:'先調查東牆、完成入口線索關聯，並取得檢查授權。'},btn);notice('條件不足，尚未取得門框證物。');return}if(!state.seen.includes(id))state.seen.push(id);if(item.flag)state.flags[item.flag]=true;const obtained=addEvidence(item.evidence);if(id==='service')state.flags.service_opened=true;popup(item,btn);notice(obtained?'取得證物：'+EV[item.evidence]:(item.success||'已記錄調查：'+item.name));render()}
+function render(){const evidence=$('#evidence');evidence.replaceChildren();for(const id of state.evidence){const li=document.createElement('li');li.textContent=EV[id]||id;evidence.append(li)}if(!state.evidence.length){const li=document.createElement('li');li.textContent='尚未取得證物';evidence.append(li)}const notes=$('#notes');notes.replaceChildren();for(const n of state.notes){const li=document.createElement('li');const b=document.createElement('strong');b.textContent=n.title+'：';li.append(b,document.createTextNode(n.body));notes.append(li)}if(!state.notes.length){const li=document.createElement('li');li.textContent='尚未建立推理紀錄';notes.append(li)}document.querySelectorAll('.hotspot[data-id]').forEach(b=>{const checked=state.seen.includes(b.dataset.id);b.classList.toggle('is-inspected',checked);b.setAttribute('aria-label',(checked?'已調查，重新檢查：':'調查：')+ITEMS[b.dataset.id].name)});renderInterview();renderFinale();$('#progress').textContent=`已調查 ${state.seen.length}/${Object.keys(ITEMS).length} 個物件 · 已取得 ${state.evidence.length} 件證物 · 已建立 ${state.notes.length} 條推理`;persist()}
+// 調查回饋：只記錄已確認的現場觀察，不自動替玩家完成證據關聯。
+const INVESTIGATION_NOTES={
+ door:['現場出入口','正門的橫閂仍在，但不能排除其他出入口。'],
+ wardrobe:['衣櫃後方凹位','凹位可以藏人，尚無證據證明當晚有人使用。'],
+ wall:['東側牆面接縫','牆面有封板痕跡，需要以原始圖面比對。'],
+ corridor:['維修區入口','走廊通往設備夾層，是否連接客房仍需證物確認。'],
+ pipe:['暖氣管線測試','暖氣支架可造成兩聲金屬碰撞；第三聲仍未釐清。'],
+ service:['檢修門實地調查','在取得授權且完成入口關聯後，於門框找到待鑑別布料。']
+};
+function popup(item,btn){
+ const p=$('#popup'),scene=$('.scene');
+ $('#popup-title').textContent=item.name;
+ $('#popup-text').textContent=item.text;
+ $('#popup-hint').textContent=item.hint;
+ p.hidden=false;
+ // 在場景內限制彈窗座標，避免靠近邊緣的物件讓文字被裁切。
+ const sc=scene.getBoundingClientRect(),r=btn.getBoundingClientRect();
+ const width=p.offsetWidth||Math.min(330,sc.width*.9);
+ const height=p.offsetHeight||200;
+ const x=r.left-sc.left+r.width/2;
+ const y=r.top-sc.top;
+ p.style.left=Math.max(8,Math.min(x,sc.width-width-8))+'px';
+ p.style.top=Math.max(8,Math.min(y-height-10,sc.height-height-8))+'px';
+}
+function inspect(btn){
+ const id=btn.dataset.id,item=ITEMS[id];if(!item)return;
+ const unmet=(item.requires||[]).filter(f=>!state.flags[f]);
+ if(unmet.length){
+  const missing={wall_inspected:'先調查東側牆面的接縫',entrance_linked:'先在線索板關聯客房舊照片與原始建築圖面',authorized:'先在書房取得檢查授權書'};
+  popup({...item,text:'尚未符合檢查條件。',hint:unmet.map(f=>missing[f]||'需要其他調查條件').join('；')+'。'},btn);
+  notice('調查尚未完成：'+unmet.map(f=>missing[f]||f).join('、'));
+  return;
+ }
+ const first=!state.seen.includes(id);
+ if(first)state.seen.push(id);
+ if(item.flag)state.flags[item.flag]=true;
+ const obtained=addEvidence(item.evidence);
+ if(id==='service')state.flags.service_opened=true;
+ if(first&&INVESTIGATION_NOTES[id]){
+  const [title,body]=INVESTIGATION_NOTES[id];addNote('investigation_'+id,title,body);
+ }
+ popup(item,btn);
+ notice(obtained?'正在儲存證物：'+EV[item.evidence]+'……':first?'已記錄調查：'+item.name:'已複查：'+item.name);
+ render();
+}
 function setLocation(loc){if(!LOC[loc])return;state.location=loc;
  // 換場景時清除上一名人物的證詞選擇，避免誤將舊證詞拿到新場景反駁。
- selectedTopic=null; /* 人物訊問獨立成頁，換場景不強制換受訪者。 */$('.scene').dataset.location=loc;$('#current-scene-title').textContent='— '+LOC[loc].title;$('#popup').hidden=true;const host=$('#hotspots');host.replaceChildren();for(const [id,x,y] of LOC[loc].spots){const b=document.createElement('button');b.className='hotspot';b.dataset.id=id;b.textContent=ITEMS[id].name;b.style.left=x+'%';b.style.top=y+'%';b.addEventListener('click',()=>inspect(b));host.append(b)}document.querySelectorAll('[data-loc]').forEach(b=>{b.classList.toggle('active',b.dataset.loc===loc);b.setAttribute('aria-current',b.dataset.loc===loc?'page':'false')});notice('目前位於'+LOC[loc].title);render()}
-$('#connect').addEventListener('click',()=>{if(state.evidence.includes('ev_old_photo')&&state.evidence.includes('ev_blueprint')){state.flags.entrance_linked=true;addNote('note_hidden_entrance','被封閉的第二入口','舊照片與建築圖面顯示東側客房曾有另一條通往維修區的路線。');notice('線索關聯成功，手札已同步更新。')}else notice('尚未取得客房舊照片及原始建築圖面。');render()});
+ selectedTopic=null; /* 人物訊問獨立成頁，換場景不強制換受訪者。 */$('.scene').dataset.location=loc;$('#current-scene-title').textContent='— '+LOC[loc].title;$('#popup').hidden=true;const host=$('#hotspots');host.replaceChildren();for(const [id,x,y] of LOC[loc].spots){const b=document.createElement('button');b.className='hotspot';b.dataset.id=id;b.textContent=ITEMS[id].name;b.classList.toggle('is-inspected',state.seen.includes(id));b.setAttribute('aria-label',(state.seen.includes(id)?'已調查，重新檢查：':'調查：')+ITEMS[id].name);b.style.left=x+'%';b.style.top=y+'%';b.addEventListener('click',()=>inspect(b));host.append(b)}document.querySelectorAll('[data-loc]').forEach(b=>{b.classList.toggle('active',b.dataset.loc===loc);b.setAttribute('aria-current',b.dataset.loc===loc?'page':'false')});notice('目前位於'+LOC[loc].title);render()}
+$('#connect').addEventListener('click',()=>{if(state.flags.entrance_linked){notice('第二入口的證據關聯已記錄在手札。')}else if(state.evidence.includes('ev_old_photo')&&state.evidence.includes('ev_blueprint')){state.flags.entrance_linked=true;addNote('note_hidden_entrance','被封閉的第二入口','舊照片與建築圖面顯示東側客房曾有另一條通往維修區的路線。');notice('線索關聯成功，手札已同步更新。')}else notice('尚未取得客房舊照片及原始建築圖面。');render()});
 $('#close').onclick=()=>$('#popup').hidden=true;
-$('#reset').onclick=()=>{if(confirm('確定清除藤原山莊的調查進度？此操作無法復原。')){state=fresh();setLocation('room');notice('進度已重設。')}};
+$('#reset').onclick=()=>{if(confirm('確定清除藤原山莊的調查進度？此操作無法復原。')){(async()=>{try{const r=await fetch('/api/fujiwara/progress/reset',{method:'POST',credentials:'same-origin'});if(!r.ok)throw Error('重置失敗');// A new investigation starts with an empty conversation history as well.
+        // Clear both transcript stores so the V52 legacy migration cannot restore old lines.
+        for(const key of ['fujiwara_chat_v35','fujiwara_v52_story']){
+          try{localStorage.removeItem(key)}catch(err){console.warn('無法清除聊天紀錄',key,err)}
+        }
+        state=fresh();persist();location.reload()}catch(e){notice('伺服器重置失敗，原存檔已保留，請稍後重試。')}})()}};
 // V13 人物詢問：證物僅能從對話／場景取得；不依賴單純測試按鈕。
 const WITNESSES={
  mio:{name:'藤原澪',location:'room',intro:'委託人。七年前失去姊姊凜，近日再次注意到牆後異響。',topics:[
@@ -60,6 +155,15 @@ const WITNESSES={
   {id:'sou_ledger',title:'凜為何找律師',line:'「我從來沒有找凜要過什麼帳冊。」',requiresRebuttal:'sou_log',rebuttal:'ev_lawyer_letter',success:'宗一郎承認曾與凜爭執帳務資料，但仍否認傷害她。',note:['note_sou_ledger','第四項矛盾','凜生前在寄給律師的信中記載叔父索取帳冊；宗一郎否認爭執的說法受質疑。']}
  ]}
 };
+// 統一提供手札使用的正式證詞資料；內部代號不直接顯示給玩家。
+window.fujiwaraTestimonyInfo=function(id){
+ for(const [characterId,w] of Object.entries(WITNESSES)){
+  const t=w.topics.find(x=>x.id===id);
+  if(t)return {id,characterId,character:w.name,title:t.title,original:t.line,
+   corrected:t.success||'',rebuttable:Boolean(t.rebuttal)};
+ }
+ return null;
+};
 let selectedWitness='mio',selectedTopic=null;
 function topicAvailable(t){return (!t.requires||t.requires.every(id=>state.evidence.includes(id)||Boolean(state.flags[id])))&&(!t.requiresRebuttal||state.rebuttals.includes(t.requiresRebuttal))}
 function renderInterview(){
@@ -79,19 +183,41 @@ function renderInterview(){
  if(t?.rebuttal){const select=$('#rebuttal-evidence');const prev=select.value;select.replaceChildren();const empty=document.createElement('option');empty.value='';empty.textContent='請選擇已取得的證物';select.append(empty);for(const id of state.evidence){const op=document.createElement('option');op.value=id;op.textContent=EV[id]||id;select.append(op)}if(state.evidence.includes(prev))select.value=prev}
  $('#interrogation-status').textContent=`已詢問 ${state.dialogues.length} 個話題 · 成功反駁 ${state.rebuttals.length} 次`;
 }
+// 自由訊問命中既定證詞後，沿用原有的證物授予及手札更新流程。
+// 不從任意 AI 回答中推測新事實；只允許白名單證詞。
+window.fujiwaraRecordInterviewTopic=function(witness, topicId){
+ if(selectedWitness!==witness)return false;
+ const topic=WITNESSES[witness]?.topics.find(t=>t.id===topicId);
+ if(!topic||!topicAvailable(topic))return false;
+ chooseTopic(topicId);
+ return true;
+};
 function chooseTopic(id){const t=WITNESSES[selectedWitness].topics.find(x=>x.id===id);if(!t||!topicAvailable(t))return;
  selectedTopic=id;if(!state.dialogues.includes(id))state.dialogues.push(id);
- if(t.give){const acquired=addEvidence(t.give);notice(acquired?'詢問取得證物：'+EV[t.give]:'已重新閱讀這段證言。')}
+ if(t.give){const acquired=addEvidence(t.give,t.id);notice(acquired?'詢問取得證物：'+EV[t.give]:'已重新閱讀這段證言。')}
  if(t.note&&!t.rebuttal)addNote(...t.note);
  $('#interrogation-feedback').textContent=t.rebuttal?'這段證詞可能有矛盾。請選擇證物反駁。':'已記錄證言。';render()
 }
-$('#submit-rebuttal').onclick=()=>{
- const t=WITNESSES[selectedWitness].topics.find(x=>x.id===selectedTopic),selected=$('#rebuttal-evidence').value;
- if(!t?.rebuttal)return;
- if(!selected){$('#interrogation-feedback').textContent='請先選擇證物。';return}
- if(selected!==t.rebuttal){$('#interrogation-feedback').textContent='這份證物不足以反駁目前的說法，請再比對證詞。';return}
- if(!state.rebuttals.includes(t.id)){state.rebuttals.push(t.id);addNote(...t.note)}
- $('#interrogation-feedback').textContent=t.success;notice('反駁成立，調查手札已更新。');render()
+async function submitVerifiedRebuttal(t, selected, feedback){
+ if(!t?.rebuttal){feedback.textContent='請先選擇要反駁的證詞。';return false}
+ if(!selected){feedback.textContent='請先選擇證物。';return false}
+ if(state.rebuttals.includes(t.id)){feedback.textContent='這段證詞已經反駁成功。';return false}
+ feedback.textContent='正在核對證詞與證物……';
+ try{
+  await v14Queue;
+  const response=await fetch('/api/fujiwara/progress/rebut',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({rebuttal:t.id,evidence:selected})});
+  const result=await response.json();
+  if(!response.ok||!result.ok){feedback.textContent=result.error||'反駁未成立，請檢查調查進度。';return false}
+  if(!state.rebuttals.includes(t.id))state.rebuttals.push(t.id);
+  if(t.note)addNote(...t.note);
+  feedback.textContent=t.success||'證詞反駁成立。';notice('反駁成立，調查手札已更新。');render();
+  return true;
+ }catch(error){feedback.textContent='無法連線確認反駁，進度未變更。請稍後重試。';return false}
+}
+$('#submit-rebuttal').onclick=async()=>{
+ const t=WITNESSES[selectedWitness].topics.find(x=>x.id===selectedTopic);
+ const button=$('#submit-rebuttal');button.disabled=true;
+ try{await submitVerifiedRebuttal(t,$('#rebuttal-evidence').value,$('#interrogation-feedback'))}finally{button.disabled=false}
 };
 document.querySelectorAll('[data-loc]').forEach(b=>b.onclick=()=>setLocation(b.dataset.loc));
 
@@ -168,8 +294,8 @@ function renderFinale(){
  ending.hidden=true;
  if(missing.length){const p=document.createElement('p');p.className='finale-warning';p.textContent='尚未符合最終推理的解鎖條件：';host.append(p);const ul=document.createElement('ul');for(const x of missing){const li=document.createElement('li');li.textContent=x;ul.append(li)}host.append(ul);return}
  const idx=state.finaleAnswers.length;
- if(idx>=FINALE_STEPS.length){const p=document.createElement('p');p.textContent=state.location==='study'?'六項推理已完成。你可以在書房提出最後的質問。':'六項推理已完成。點擊下方按鈕即可前往書房。';host.append(p);const b=document.createElement('button');b.className='finale-submit';b.textContent=state.location==='study'?'質問宗一郎，揭露真相':'前往書房，準備最終對質';b.onclick=()=>{if(finaleReadiness().length||state.finaleAnswers.length!==FINALE_STEPS.length)return;
- if(state.location!=='study'){setLocation('study');notice('已前往山莊書房，準備進行最終對質。');}state.endingUnlocked=true;addNote('note_case_resolution','案件重建完成','宗一郎在對質後承認當年的爭執與隱瞞。完整責任仍須由後續調查確認。');notice('CASE 001｜真相揭露');render();$('#ending').scrollIntoView({behavior:'smooth',block:'start'})};host.append(b);return}
+ if(idx>=FINALE_STEPS.length){const p=document.createElement('p');p.textContent=state.location==='study'?'六項推理已完成。你可以在書房提出最後的質問。':'六項推理已完成。點擊下方按鈕即可前往書房。';host.append(p);const b=document.createElement('button');b.className='finale-submit';b.textContent=state.location==='study'?'質問宗一郎，揭露真相':'前往書房，準備最終對質';b.onclick=async()=>{if(finaleReadiness().length||state.finaleAnswers.length!==FINALE_STEPS.length)return;
+ if(state.location!=='study'){setLocation('study');notice('已前往山莊書房。請再次按下「質問宗一郎，揭露真相」開始對質。');return;}const btn=b;btn.disabled=true;try{const r=await fetch('/api/fujiwara/progress/ending',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:state.finaleAnswers})});const data=await r.json();if(!r.ok||!data.ok){notice(data.error||'結案驗證失敗');return}state.endingUnlocked=true;}catch(e){notice('結案存檔失敗，請檢查連線再試');return}finally{btn.disabled=false}addNote('note_case_resolution','案件重建完成','宗一郎在對質後承認當年的爭執與隱瞞。完整責任仍須由後續調查確認。');notice('CASE 001｜真相揭露');render();$('#ending').scrollIntoView({behavior:'smooth',block:'start'})};host.append(b);return}
  const step=FINALE_STEPS[idx];appendConditionList(host,finaleStepConditions(step),'本題需要的證據與證詞');const h=document.createElement('h3');h.textContent=step.title;host.append(h);const q=document.createElement('p');q.textContent=step.question;host.append(q);
  const choices=document.createElement('div');choices.className='finale-options';host.append(choices);
  const feedback=document.createElement('p');feedback.className='finale-feedback';feedback.setAttribute('role','status');host.append(feedback);
@@ -251,14 +377,47 @@ setLocation(LOC[state.location]?state.location:'room');
   el.textContent=state.endingUnlocked?'宗一郎已承認隱瞞當年的衝突，案件資料將移交重新調查。':missing.length?`尚有 ${missing.length} 項必要調查未完成。請回到場景與證詞尋找缺失的線索。`:n===6?'六項推理完成。請回到山莊書房，與宗一郎當面對質。':`案件重建進度 ${n}／6。每項結論都必須以已取得的證據支持。`;
   $v('v16-confrontation-progress').style.width=`${n/6*100}%`;
  }
- function updateV16(){updatePortrait();renderBoard();updateConfrontation()}
+ function updateV16(){updatePortrait();renderBoard();updateConfrontation();updateBoardChain()}
+ // 第三批：新增可驗證的證據鏈；不改動既有結案門檻與真相。
+ const BOARD_LINKS=[
+  {id:'entrance',pair:['ev_old_photo','ev_blueprint'],title:'被封閉的第二入口',description:'舊照片與建築圖面顯示東側客房曾有通往維修區的第二條路線。',primary:true},
+  {id:'seal',pair:['ev_blueprint','ev_sealing_order'],title:'封門時間的疑點',hint:'一道門究竟何時被封閉？',description:'建築圖面證實維修門存在；施工單顯示封門工程發生在事故之後，但不能單憑施工單推定封門動機。'},
+  {id:'trace',pair:['ev_fabric','ev_accident_report'],title:'現場痕跡尚待鑑別',hint:'現場留下的痕跡代表什麼？',description:'門框布料與事故現場紀錄都值得進一步比對，但現階段不能證明布料所有者或死亡原因。'},
+  {id:'timeline',pair:['ev_entry_log','ev_lawyer_letter'],title:'維修區行蹤與帳冊爭執',hint:'誰曾出現在維修區？又為何與帳冊有關？',description:'出入紀錄記載宗一郎案發當晚曾到維修區；凜的信記載帳冊爭執。兩項資料相互提供調查方向，但仍不能直接證明致命行為。'}
+ ];
+ function matchBoardLink(ids){return BOARD_LINKS.find(link=>link.pair.every(id=>ids.includes(id)))||null}
+ function boardLinkCount(){return BOARD_LINKS.filter(link=>link.primary?!!state.flags.entrance_linked:!!state.flags['board_'+link.id]).length}
+ function updateBoardChain(){
+  const el=$v('v43-board-chain');if(!el)return;
+  el.replaceChildren();
+  const heading=document.createElement('strong');heading.textContent=`證據鏈 ${boardLinkCount()}／${BOARD_LINKS.length}`;el.append(heading);
+  const list=document.createElement('ul');
+  BOARD_LINKS.forEach(link=>{
+   const complete=link.primary?!!state.flags.entrance_linked:!!state.flags['board_'+link.id];
+   const li=document.createElement('li');li.className=complete?'is-complete':'is-pending';
+   li.textContent=(complete?'✓ ':'○ ')+(complete?link.title:(link.hint||'尚未建立的關聯'));
+   if(complete)li.title=link.description;
+   list.append(li);
+  });
+  el.append(list);
+ }
  $v('v16-board-link').addEventListener('click',()=>{
   if(selection.length!==2)return;
-  const correct=['ev_old_photo','ev_blueprint'].every(id=>selection.includes(id));
   const feedback=$v('v16-board-feedback');
-  if(!correct){feedback.textContent='目前兩項證物尚無可確認的關聯，請換一組。';return}
-  // 使用 V15 原有關聯按鈕與判定，避免產生第二套進度規則。
-  $v('connect').click();feedback.textContent=state.flags.entrance_linked?'關聯成立：被封閉的第二入口。手札已同步更新。':'條件尚未符合。';
+  const link=matchBoardLink(selection);
+  if(!link){feedback.textContent='這兩項證物尚無足夠資料建立可靠關聯。請重新比對證物描述。';return}
+  const done=link.primary?!!state.flags.entrance_linked:!!state.flags['board_'+link.id];
+  if(done){feedback.textContent='這條證據鏈已經建立，請查看手札。';selection.length=0;updateV16();return}
+  if(link.primary){
+   // 唯一會影響既有劇情解鎖的關聯，沿用原本判定。
+   $v('connect').click();
+   if(!state.flags.entrance_linked){feedback.textContent='條件尚未符合。';return}
+  }else{
+   state.flags['board_'+link.id]=true;
+   addNote('board_'+link.id,link.title,link.description);
+   render();
+  }
+  feedback.textContent='關聯成立：'+link.title+'。已同步至偵探手札。';
   selection.length=0;updateV16();
  });
  $v('v16-board-clear').addEventListener('click',()=>{selection.length=0;$v('v16-board-feedback').textContent='已清除選取。';updateV16()});
@@ -288,15 +447,45 @@ setLocation(LOC[state.location]?state.location:'room');
     {speaker:'旁白',mark:'檔',emotion:'尾聲',line:'澪望向那面曾被封住的牆。第三聲不再只是令人不安的傳聞，而是一段終於有人願意追問的往事。'}
   ];
   const overlay=get('v17-cutscene');
-  let index=0,returnFocus=null;
+  let index=0,returnFocus=null,timer=null,deadline=0,remaining=0,playing=true;
+  const next=get('v17-next');
+  const pause=get('v48-pause');
+  const progress=get('v48-progress');
+  const duration=()=>Math.min(10500,Math.max(4400,scenes[index].line.length*115+2200));
+  const stopTimer=()=>{if(timer!==null){clearTimeout(timer);timer=null}};
+  const resetProgress=(ms)=>{
+    progress.style.transition='none';
+    progress.style.width='0%';
+    void progress.offsetWidth;
+    if(playing){
+      progress.style.transition=`width ${ms}ms linear`;
+      progress.style.width='100%';
+    }
+  };
+  function schedule(ms){
+    stopTimer();
+    remaining=ms;
+    deadline=Date.now()+ms;
+    resetProgress(ms);
+    if(playing)timer=setTimeout(advance,ms);
+  }
+  function advance(){
+    stopTimer();
+    if(index<scenes.length-1){index++;draw();schedule(duration())}
+    else close();
+  }
   const open=()=>{
     if(!state.endingUnlocked)return;
     returnFocus=document.activeElement;
-    index=0;overlay.hidden=false;
+    index=0;playing=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    overlay.hidden=false;
     document.body.classList.add('v17-dialogue-open');
-    draw();get('v17-next').focus();
+    pause.textContent=playing?'暫停自動播放':'開始播放';
+    draw();schedule(duration());
+    pause.focus();
   };
   const close=()=>{
+    stopTimer();
     overlay.hidden=true;
     document.body.classList.remove('v17-dialogue-open');
     state.flags.v17_scene_viewed=true;
@@ -312,7 +501,8 @@ setLocation(LOC[state.location]?state.location:'room');
     get('v17-stage-mark').textContent=s.mark;
     get('v17-stage-portrait').dataset.speaker=s.speaker;
     get('v17-scene-title').textContent=s.emotion;
-    get('v17-next').textContent=index===scenes.length-1?'結束演出':'繼續 ›';
+    overlay.dataset.scene=index>=8?'confession':index>=5?'confrontation':'investigation';
+    next.textContent=index===scenes.length-1?'結束演出':'下一句 ›';
   }
   function addReplay(){
     const ending=get('ending');
@@ -321,16 +511,36 @@ setLocation(LOC[state.location]?state.location:'room');
     button.type='button';button.id='v17-replay';button.textContent='重看最終對質演出';
     button.addEventListener('click',open);ending.append(button);
   }
-  get('v17-next').addEventListener('click',()=>{if(index<scenes.length-1){index++;draw()}else close()});
+  next.addEventListener('click',advance);
+  pause.addEventListener('click',()=>{
+    if(playing){
+      remaining=Math.max(200,deadline-Date.now());
+      stopTimer();playing=false;
+      const pct=Math.max(0,Math.min(100,(1-remaining/duration())*100));
+      progress.style.transition='none';progress.style.width=pct+'%';
+      pause.textContent='繼續自動播放';
+    }else{
+      playing=true;pause.textContent='暫停自動播放';
+      const ms=remaining||duration();
+      deadline=Date.now()+ms;
+      progress.style.transition=`width ${ms}ms linear`;
+      progress.style.width='100%';
+      timer=setTimeout(advance,ms);
+    }
+  });
   get('v17-skip').addEventListener('click',close);
   overlay.addEventListener('keydown',event=>{
     if(event.key==='Escape'){event.preventDefault();close()}
+    if(event.key===' '&&event.target===overlay){event.preventDefault();pause.click()}
     if(event.key==='Tab'){
-      const controls=[get('v17-skip'),get('v17-next')];
+      const controls=[get('v17-skip'),pause,next];
       const target=controls.indexOf(document.activeElement);
-      if(event.shiftKey&&target===0){event.preventDefault();controls[1].focus()}
-      else if(!event.shiftKey&&target===1){event.preventDefault();controls[0].focus()}
+      if(event.shiftKey&&target===0){event.preventDefault();controls[2].focus()}
+      else if(!event.shiftKey&&target===2){event.preventDefault();controls[0].focus()}
     }
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden&&!overlay.hidden&&playing)pause.click();
   });
   // 原始 render() 是唯一進度刷新來源；演出只在首次解鎖結局時啟動。
   const baseRender=render;
@@ -389,3 +599,16 @@ setLocation(LOC[state.location]?state.location:'room');
 })();
 
 window.refreshFujiwaraCase=render;
+
+// Restore server-owned facts after reload; localStorage holds only presentation and exploration details.
+(async()=>{try{
+ await v14Queue;const response=await fetch('/api/fujiwara/progress',{credentials:'same-origin'});
+ if(!response.ok)throw Error('progress unavailable');
+ const saved=await response.json();
+ await v14Queue;
+ state.evidence=Array.isArray(saved.evidence)?saved.evidence:[];
+ state.rebuttals=Array.isArray(saved.rebuttals)?saved.rebuttals:[];
+ state.endingUnlocked=Boolean(saved.endingUnlocked);
+ if(!state.endingUnlocked&&state.finaleAnswers.length===6)state.finaleAnswers=[];
+ render();
+}catch(e){console.warn('無法取得伺服器進度，暫停正式結案判定',e);state.endingUnlocked=false;render()}})();

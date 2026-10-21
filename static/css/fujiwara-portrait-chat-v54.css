@@ -1,0 +1,51 @@
+/* V54: remove old portrait background entirely, no repeated layers */
+#v16-portrait.v54-portrait {
+ position:relative!important;display:block!important;flex:0 0 240px!important;
+ width:240px!important;height:275px!important;min-height:0!important;
+ box-sizing:border-box!important;overflow:hidden!important;
+ border:4px double #9d7750!important;border-radius:7px!important;
+ background:#3e2922 none!important;background-image:none!important;
+ background-repeat:no-repeat!important;box-shadow:0 6px 15px #29190d50!important;
+}
+#v16-portrait.v54-portrait::before,#v16-portrait.v54-portrait::after{content:none!important;display:none!important}
+#v16-portrait.v54-portrait img.v53-portrait-img{
+ position:absolute!important;inset:0!important;display:block!important;
+ width:100%!important;height:100%!important;max-width:none!important;
+ object-fit:cover!important;object-position:50% 25%!important;
+ opacity:1!important;z-index:1!important;visibility:visible!important;
+ background:none!important;transform:none!important;
+}
+#v16-portrait.v54-portrait #v16-monogram{position:absolute!important;right:7px!important;bottom:7px!important;z-index:2!important}
+.v16-character{align-items:flex-start!important;gap:20px!important}
+.v16-character-heading{min-width:0!important;flex:1!important}
+#interview-ai-panel{gap:8px!important}
+#interview-ai-panel .ai-help{font-size:13px!important;line-height:1.5!important;margin:0 0 3px!important}
+#interview-ai-panel h3{margin:3px 0!important}
+#v52-conversation{height:250px!important;max-height:250px!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important}
+#v52-conversation #ai-chat-history,#v52-conversation #v52-story-log{max-height:none!important;min-height:0!important;padding:5px!important}
+#v52-conversation .v52-msg{margin:6px 0!important;padding:8px 10px!important}
+#ai-question-form{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:end!important;gap:8px!important}
+#ai-question-form label{grid-column:1/-1!important}
+#ai-question{min-height:58px!important;height:58px!important;max-height:130px!important;resize:vertical!important;box-sizing:border-box!important}
+#ai-send{min-height:44px!important;white-space:nowrap!important}
+#v52-help.v54-disclosure,#v52-proof.v54-disclosure{
+ display:block!important;border:1px solid #b89a75!important;
+ border-radius:8px!important;background:#f2e0bd!important;
+ padding:0!important;margin:0!important;
+}
+.v54-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;padding:12px 15px;font-weight:700;color:#583728}
+.v54-disclosure>summary span{font-size:12px;font-weight:400;color:#80624c}
+.v54-disclosure[open]>summary{border-bottom:1px solid #c5a983}
+.v54-disclosure>p,.v54-disclosure>#v52-prompts,.v54-disclosure>label,.v54-disclosure>select,.v54-disclosure>button{margin-left:14px!important;margin-right:14px!important}
+.v54-disclosure>p{font-size:13px;line-height:1.6}
+#v52-proof select{width:calc(100% - 28px)!important}
+#v52-proof #v52-feedback{margin-bottom:12px}
+#v52-prompts{padding-bottom:12px}
+@media(max-width:750px){
+ .v16-character{flex-direction:column!important}
+ #v16-portrait.v54-portrait{width:210px!important;height:235px!important;flex:0 0 auto!important;margin:0 auto!important}
+ .v16-character-heading{width:100%!important}
+ #ai-question-form{grid-template-columns:1fr!important}
+ #ai-question-form label{grid-column:1!important}
+ #ai-send{justify-self:end!important}
+}

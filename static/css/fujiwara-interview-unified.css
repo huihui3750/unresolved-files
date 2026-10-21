@@ -1,0 +1,9 @@
+/* V45: 全身像完整呈現、固定話題與自由問答合併 */
+.v16-character{align-items:flex-start!important;gap:22px!important}
+.v16-portrait{width:clamp(190px,25vw,290px)!important;height:clamp(280px,36vw,400px)!important;min-height:0!important;flex:0 0 auto!important;background-size:contain!important;background-repeat:no-repeat!important;background-position:center center!important;background-color:#473327!important;border:5px double #a98964!important;box-sizing:border-box!important}
+.v16-portrait span{right:8px!important;bottom:8px!important}
+.v16-character-heading{min-width:0;flex:1}
+.v45-interview-hint{padding:12px 15px;background:#f1dfba;border-left:4px solid #8b4e3a;color:#4c3023;line-height:1.6}
+#interview-fixed-panel,#interview-ai-panel{display:block!important}
+#interview-ai-panel{margin-top:22px;border-top:3px double #98734d}
+@media(max-width:650px){.v16-character{flex-direction:column!important}.v16-portrait{width:min(100%,270px)!important;height:340px!important;margin-inline:auto}.v16-character-heading{width:100%}}

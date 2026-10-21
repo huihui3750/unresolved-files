@@ -1,0 +1,9 @@
+.v50-archive-overlay[hidden]{display:none!important}
+.v50-archive-overlay{position:fixed;inset:0;z-index:30000;background:#140b09c9;display:grid;place-items:center;padding:clamp(8px,2vw,24px)}
+.v50-archive-window{width:min(1140px,100%);height:min(790px,94dvh);display:flex;flex-direction:column;border:2px solid #a98761;border-radius:13px;overflow:hidden;background:#e8d4af;box-shadow:0 22px 80px #0009}
+.v50-archive-header{flex:none;min-height:60px;display:flex;align-items:center;justify-content:space-between;padding:9px 22px;background:#593629;color:#f2d8b4;letter-spacing:.09em;font-weight:700}
+.v50-archive-close{background:#2c1b17;color:#f7dfb8;border:1px solid #caa37a;border-radius:6px;font-size:27px;width:44px;height:44px;cursor:pointer}
+.v50-archive-close:hover,.v50-archive-close:focus-visible{outline:2px solid #f0c890}
+.v50-archive-frame{flex:1;width:100%;min-height:0;border:0;background:#ebd9b7}
+body.v50-archive-open{overflow:hidden}
+@media(max-width:650px){.v50-archive-window{height:96dvh}.v50-archive-header{padding:7px 12px;font-size:12px}}

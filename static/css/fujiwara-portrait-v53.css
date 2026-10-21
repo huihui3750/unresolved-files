@@ -1,0 +1,24 @@
+/* V53: Single real image element; no CSS background tiling or double portraits. */
+#v16-portrait.v16-portrait {
+  position:relative!important; display:block!important;
+  width:clamp(210px,25vw,360px)!important;
+  height:clamp(280px,34vw,400px)!important;
+  min-height:0!important; flex:0 0 auto!important;
+  padding:0!important; box-sizing:border-box!important;
+  background:#493226!important;
+  background-image:none!important; background-repeat:no-repeat!important;
+  overflow:hidden!important; border:5px double #a98964!important;
+}
+#v16-portrait.v16-portrait::before,
+#v16-portrait.v16-portrait::after {display:none!important;content:none!important}
+#v16-portrait .v53-portrait-img {
+  display:block!important;position:absolute!important;inset:0!important;
+  width:100%!important;height:100%!important;max-width:none!important;
+  object-fit:cover!important;object-position:center 23%!important;
+  opacity:1!important;visibility:visible!important;z-index:1!important;
+  border:0!important;border-radius:0!important;
+}
+#v16-portrait #v16-monogram {position:absolute!important;z-index:2!important;right:7px!important;bottom:7px!important}
+@media(max-width:650px) {
+  #v16-portrait.v16-portrait{width:min(100%,300px)!important;height:340px!important;margin-inline:auto}
+}

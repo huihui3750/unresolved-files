@@ -1,0 +1,7 @@
+/* Only applied when archive is shown inside the conclusion's book window. */
+body.archive-body.v50-embedded .archive-nav,
+body.archive-body.v50-embedded .shelf-header,
+body.archive-body.v50-embedded .shelf > footer{display:none!important}
+body.archive-body.v50-embedded .shelf{max-width:none!important;min-height:100%!important;margin:0!important;padding:14px!important;border:0!important;box-shadow:none!important}
+body.archive-body.v50-embedded .v41-book{margin-top:8px!important}
+body.archive-body.v50-embedded{background:#e8d4af!important}

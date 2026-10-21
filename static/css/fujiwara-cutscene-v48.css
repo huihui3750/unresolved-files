@@ -1,0 +1,21 @@
+/* CASE 001 V48 — cinematic confrontation */
+.v17-stage{width:min(1200px,98vw)!important;height:min(780px,94dvh)!important;min-height:0!important;display:block!important;overflow:hidden!important;background:linear-gradient(0deg,#180f0be8,#302019aa),url('../art/fujiwara-study.svg') center/cover!important}
+.v17-stage::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#0d080855,transparent 35%,#0d080844),radial-gradient(ellipse at center,transparent 45%,#08040377);z-index:0}
+.v17-stage-top{z-index:5!important}
+.v17-stage-portrait{position:absolute!important;top:10%!important;left:50%!important;transform:translateX(-50%)!important;width:min(43%,390px)!important;height:49%!important;border-radius:0!important;background-position:center center!important;background-size:contain!important;background-repeat:no-repeat!important;background-color:transparent!important;box-shadow:none!important;filter:drop-shadow(0 14px 24px #100805b8);z-index:2!important}
+.v17-stage-portrait[data-speaker="藤原宗一郎"]{background-image:url('../art/portraits/souichiro-clean.webp')!important}
+.v17-stage-portrait[data-speaker="藤原澪"]{background-image:url('../art/portraits/mio-clean.webp')!important}
+.v17-stage-portrait[data-speaker="調查員"],.v17-stage-portrait[data-speaker="旁白"]{opacity:.3}
+.v17-stage-portrait.v21-enter{animation:v48-arrive .4s ease-out!important}
+@keyframes v48-arrive{from{opacity:.35;filter:blur(3px)}to{opacity:1;filter:blur(0)}}
+.v17-stage-panel{position:absolute!important;bottom:12px!important;left:2%!important;right:2%!important;margin:0!important;min-height:0!important;max-height:39%!important;overflow:auto;padding:15px 22px 16px!important;z-index:4!important;background:linear-gradient(120deg,#f1dfbded,#d8b98eea)!important;backdrop-filter:blur(6px)}
+.v17-stage-panel p{font-size:clamp(16px,1.6vw,20px)!important;line-height:1.65!important;min-height:0!important;margin:8px 0 10px!important}
+.v17-stage-panel h2{margin:3px 0!important}
+.v17-stage-panel strong{font-size:clamp(19px,2vw,26px)}
+.v17-stage-panel button{display:inline-block!important;margin:5px 0 0 8px!important;float:right}
+.v17-stage-panel #v48-pause{background:#f5e7ce;color:#583b2c}
+.v48-timeline{height:4px;background:#b99570;margin:-4px 0 10px;overflow:hidden;border-radius:3px}
+.v48-timeline span{display:block;height:100%;width:0;background:#844236}
+.v17-cutscene[data-scene="confession"] .v17-stage{background-image:linear-gradient(0deg,#130a08d9,#321b1caa),url('../art/fujiwara-study.svg')!important}
+@media(max-width:650px){.v17-stage{height:96dvh!important}.v17-stage-portrait{width:75%!important;height:43%!important;top:11%!important}.v17-stage-panel{max-height:45%!important;left:1%!important;right:1%!important;padding:12px!important}.v17-stage-panel p{font-size:16px!important}.v17-stage-top{padding:12px!important}}
+@media(prefers-reduced-motion:reduce){.v17-stage-portrait.v21-enter{animation:none!important}}

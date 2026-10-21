@@ -1,0 +1,24 @@
+/* V49 chat UI: one conversation stream */
+.v16-portrait{background-size:contain!important;background-repeat:no-repeat!important;background-position:center center!important;background-color:#38261e!important;overflow:hidden!important}
+.v16-portrait::before,.v16-portrait::after{content:none!important;display:none!important}
+.v16-portrait[data-person="mio"]{background-image:url('../art/portraits/mio-clean.webp')!important}
+.v16-portrait[data-person="shizue"]{background-image:url('../art/portraits/shizue-clean.webp')!important}
+.v16-portrait[data-person="naoto"]{background-image:url('../art/portraits/naoto-clean.webp')!important}
+.v16-portrait[data-person="souichiro"]{background-image:url('../art/portraits/souichiro-clean.webp')!important}
+.v16-portrait{width:clamp(145px,22vw,230px)!important;height:clamp(205px,30vw,310px)!important}
+#v49-chat-log{background:#f0dfbe;border:2px solid #a5815b;border-radius:10px;padding:14px;margin:18px 0;max-height:440px;overflow:auto;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin}
+#v49-chat-log h4{margin:0;color:#583a2c}#v49-chat-log .v49-placeholder{color:#83684d}
+.v49-message{max-width:86%;padding:10px 15px;border:1px solid #c5a57b;border-radius:13px;background:#fff0d1;align-self:flex-start;color:#483022}
+.v49-message.user{align-self:flex-end;background:#dcc2a0}.v49-message.system{align-self:center;background:#e6d5b6;border-style:dashed}
+.v49-message small{color:#95694b;font-size:12px}.v49-message p{margin:5px 0 0;line-height:1.7;white-space:pre-wrap}
+#v49-chat-log #ai-chat-history{display:flex!important;flex-direction:column;gap:10px;overflow:visible!important;max-height:none!important;border:0!important;padding:0!important;background:transparent!important}
+#v49-chat-log .ai-bubble{max-width:86%;border-radius:13px;padding:10px 14px;margin:0!important;line-height:1.65;background:#fff0d1;color:#483022}
+#v49-chat-log .ai-user{align-self:flex-end;background:#dcc2a0}#v49-chat-log .ai-character{align-self:flex-start}
+.v49-hidden-source{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;pointer-events:none!important}
+#interview-ai-panel{border-top:0!important;margin-top:12px!important}
+#interview-ai-panel>h3{display:none}#interview-ai-panel>.ai-help{font-size:13px}
+#topic-list{margin:8px 0 12px}#rebuttal{margin:12px 0}#interrogation-feedback{min-height:1em}
+#notebook-launch{touch-action:none!important;user-select:none!important}
+#notebook-handle{touch-action:none!important;cursor:grab!important}
+#notebook-handle:active{cursor:grabbing!important}
+@media(max-width:700px){.v16-portrait{width:190px!important;height:260px!important}#v49-chat-log{max-height:52dvh}.v49-message,#v49-chat-log .ai-bubble{max-width:95%}}

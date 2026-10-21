@@ -118,3 +118,28 @@
 .v36-condition-marker{font-weight:900;flex:none;min-width:1.2em}
 
 .v40-archive-link{display:inline-block;margin:12px 0 4px 12px;padding:12px 18px;background:#69402e;color:#fff0d4;border:1px solid #a47b4f;border-radius:6px;text-decoration:none;font-weight:bold}.v40-archive-link:hover{background:#855137}
+
+/* V43: evidence-chain progress, consistent with the vintage notebook palette. */
+.v43-board-chain{margin:1rem 0;padding:1rem;border:1px solid #947353;border-radius:8px;background:rgba(245,228,190,.4);color:#49311f}
+.v43-board-chain ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.5rem;padding-left:1.2rem;margin:.65rem 0 0}
+.v43-board-chain li.is-complete{font-weight:600;color:#35523a}
+.v43-board-chain li.is-pending{color:#765d47}
+
+/* CASE 001 · 結案報告操作按鈕：2026-10-20 */
+#ending { display:flex; flex-wrap:wrap; column-gap:12px; row-gap:12px; align-items:stretch; }
+#ending > h3, #ending > p, #ending > ul { flex:0 0 100%; }
+#ending > button, #ending > a.v40-archive-link {
+  box-sizing:border-box; flex:1 1 230px; min-width:0; min-height:56px;
+  display:inline-flex; align-items:center; justify-content:center;
+  margin:12px 0 0; padding:12px 18px; text-align:center;
+  font-family:inherit; font-size:16px; font-weight:700; line-height:1.5;
+  border-radius:7px; border:1px solid #8e654b;
+  background:#674332; color:#fff2d9; text-decoration:none;
+  cursor:pointer; transition:background-color .18s,transform .18s;
+}
+#ending > a.v40-archive-link {background:#873f35; color:#fff5e6; border-color:#a35e4d;}
+#ending > button:hover, #ending > a.v40-archive-link:hover {background:#8d5940; color:#fffaf0; transform:translateY(-1px);}
+#ending > a.v40-archive-link:hover {background:#a24e40;}
+#ending > button:focus-visible, #ending > a.v40-archive-link:focus-visible {outline:3px solid #a55c3c; outline-offset:3px;}
+#ending > button:disabled, #ending > a.v40-archive-link[aria-disabled="true"] {opacity:.56; cursor:not-allowed; transform:none;}
+@media (max-width:720px) {#ending > button, #ending > a.v40-archive-link {flex:1 1 100%; margin-top:0;} }
